@@ -6,8 +6,7 @@ from django.contrib.staticfiles.urls import staticfiles_urlpatterns
 from django.views.static import serve
 
 urlpatterns = [
-    path('',views.user_index,name='user_index'),
-    path('user_home/',views.user_home,name='user_home'),
+    path('user_dashboard/',views.user_dashboard,name='user_dashboard'),
     
     
     

@@ -6,7 +6,12 @@ from django.contrib.staticfiles.urls import staticfiles_urlpatterns
 from django.views.static import serve
 
 urlpatterns = [
-    path('',views.index,name='index'),
+    #Dashboard
+    re_path(r'^$', views.admin_dashboard, name='admin_dashboard'),
+
+    #Document
+    re_path(r'^admin_view_document/$', views.admin_view_document, name='admin_view_document'),
+    re_path( r'^admin_view_pdf/$', views.admin_view_pdf, name='admin_view_pdf'),
     
     
     

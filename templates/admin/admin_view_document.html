@@ -1,0 +1,59 @@
+{% extends "admin/admin_dashboard.html" %}
+{% load static %}
+
+{% block content %}
+
+<style>
+    #background {
+        background-image: url('gallery/images/document_background/bakground1.jpg');
+        background-size: cover;
+        height: 500px;
+        width: 200px;
+    }
+    #img {
+        height: 500px;
+        width: 200px;
+    }
+    a {
+    position: relative;
+    z-index: 1000;
+}
+
+@page {
+    size: A4;
+    margin: 0;
+}
+
+body {
+    margin: 0;
+    padding: 0;
+}
+
+.bg {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 210mm;
+    height: 297mm;
+    z-index: -1;
+}
+
+.content {
+    position: relative;
+    padding: 20mm;
+}
+</style>
+
+
+<div class="container-fluid">
+<img src="Admin/gallery/logo/logo.png" id="img">
+hello
+</div>
+<div>
+<a href="{% url 'admin_view_pdf' %}">Dashboard</a>
+</div>
+
+<button type="submit">Add</button>
+
+
+{% endblock %}

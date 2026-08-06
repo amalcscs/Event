@@ -1,8 +1,6 @@
 from django.shortcuts import render
 
 # Create your views here.
-def user_index(request):
-    return render(request,'user/user_index.html')
+def user_dashboard(request):
+    return render(request,'user/user_dashboard.html')
 
-def user_home(request):
-    return render(request,'user/user_home.html')
