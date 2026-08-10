@@ -1,7 +1,26 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>View PDF Document</title>
+
+    
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+
+    <link rel="stylesheet" href="{% static 'Admin/admin_css/admin_dashboard.css' %}">
+    <script src="{% static 'Admin/admin_js/admin_dashboard.js' %}"></script>
+
+</head>
 <style>
 @page {
     size: A4;
-    margin: 0;
+    margin: 5mm;
 
     background-image: url('{{ background }}');
     background-width: 210mm;
@@ -9,11 +28,214 @@
 }
 
 body {
-    margin: 20mm;
+    margin: 0;
+    padding: 0;
 }
+#heading {
+    color: yellow;
+    font-family: 'Courier New', Courier, monospace;
+    font-size: 60px;
+    font-weight: 900;
+    font-style: italic;
+}
+.first-table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.first-table td {
+    border: none;
+    padding: 3px;
+}
+
+
+.table-container {
+    margin-left: 10mm;
+    margin-right: 10mm;
+}
+
+.border-table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.border-table td,
+.border-table th {
+    border: 1px solid #000000;
+    padding: 5px;
+}
+
+.calc-table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.calc-table td,
+.calc-table th {
+    border: 1px solid #000000;
+    padding: 5px;
+}
+
+.gallery {
+        width: 100%;
+        border-collapse: collapse;
+    }
+
+    .gallery td {
+        border: none;
+        text-align: center;
+        vertical-align: middle;
+        padding: 5px;
+    }
+
+    .gallery img {
+        width: 50%;
+        height: 4520px;
+    }
+/* .big-dot {
+    font-size: 20px;
+    margin-right: 3px;
+} */
 </style>
 
 <body>
-    <h1>Hello</h1>
-    <p>This is my PDF.</p>
+
+    <!-- Heading Section -->
+    <br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
+    <center id="heading">QUOTATION</center>
+    <br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
+    <br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
+
+    <!-- Client Details and Account Details Section -->
+
+    <table class="first-table">
+        <tr>
+        <td><b>INVOICE NO:Test name </b></td>
+        <td><b>BANK NAME:</b></td>
+        </tr>
+        <tr>
+        <td><b>NAME:</b></b></td>
+        <td><b>ACCOUNT NUMBER:</b></td>
+        </tr>
+        <tr>
+        <td><b>ADDRESS:<b><c>Test addressTest addressTest addressTest addressTest addressTest addressTest addressTest address</c></td>
+        <td><b>IFSC:</b></td>
+        </tr>
+        <tr>
+        <td><b>VENUE:</b></td>
+        <td><b>ACCOUNT HOLDER:</b></td>
+        </tr>
+        <tr>
+        <td><b>DATE:</b></td>
+        </tr>
+        <tr>
+        <td><b>THEME:</b></td>
+        </tr>
+        <tr>
+        <td><b>FUNCTION:</b></td>
+        </tr>
+
+        
+</table>
+
+<br><br>
+
+    <!-- Item Details -->
+
+<div class="table-container">
+    <table class="border-table">
+        <tr>
+        <th width="10%"><b>NO:</b></td>
+        <th><b>ITEM</b></td>
+        <th width="10%"><b>QTY</b></td>
+        <th width="30%"><b>PRICE</b></td>
+        </tr>
+        <tr>
+        <td width="10%"></td>
+        <td>Stage</td>
+        <td width="10%"></td>
+        <td width="30%">50000</td>
+        </tr>
+        <tr>
+        <td width="10%">1</td>
+        <td><span class="big-dot">●</span></td>
+        <td width="10%">1</td>
+        <td width="30%">50000</td>
+        </tr>
+        <tr>
+        <td width="10%"></td>
+        <td><span class="big-dot">●</span></td>
+        <td width="10%">1</td>
+        <td width="30%">50000</td>
+        </tr>
+    </table>
+    
+</div>
+
+<br>
+
+    <!-- Amount Calculation -->
+
+<table class="calc-table">
+        <tr>
+        <td  style="text-align: right;">Amount</td>
+        <td width="30%">50000</td>
+        </tr>
+        <tr>
+        <td  style="text-align: right;">Advance</td>
+        <td width="30%">50000</td>
+        </tr>
+        <tr>
+        <td  style="text-align: right;">Payable Amount</td>
+        <td width="20%">50000</td>
+        </tr>
+       
+    </table>
+<br><br><br>
+    <!-- Gallery -->
+
+    <table width="100%">
+
+
+
+   
+    <tr>
+  
+
+        <td>
+            <img src="{{ background1 }}">
+        </td>
+
+    
+    </tr>
+    
+
+
+
+</table>
+
+    <table class="gallery">
+
+
+
+   
+    <tr>
+  
+
+        <td>
+            <img src="{{ background1 }}">
+        </td>
+        <td>
+            <img src="{{ background1 }}">
+        </td>
+
+    
+    </tr>
+    
+
+
+
+</table>
+
 </body>
+</html>

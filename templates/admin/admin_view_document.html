@@ -4,48 +4,65 @@
 {% block content %}
 
 <style>
-    #background {
-        background-image: url('gallery/images/document_background/bakground1.jpg');
-        background-size: cover;
-        height: 500px;
-        width: 200px;
+    table {
+        background-color: green;
+        border: 1px solid black;
     }
-    #img {
-        height: 500px;
-        width: 200px;
-    }
-    a {
-    position: relative;
-    z-index: 1000;
-}
-
-@page {
-    size: A4;
-    margin: 0;
-}
-
-body {
-    margin: 0;
-    padding: 0;
-}
-
-.bg {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 210mm;
-    height: 297mm;
-    z-index: -1;
-}
-
-.content {
-    position: relative;
-    padding: 20mm;
-}
 </style>
 
+<button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#myModal">
+        <i class="mdi mdi-check"></i>&nbsp; Add Quotation</button>
+    <table>
+        <tr>
+            <th>Customer Name</th>
+            <th>Contact</th>
+            <th>View PDF</th>
+            <th>Action</th>
+        </tr>
+        <tr>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+        </tr>
+    </table>
 
-<div class="container-fluid">
+
+<!-- Modal -->
+<div class="modal fade" id="myModal" >
+    <div class="modal-dialog">
+        <div class="modal-content">
+
+            <div class="row">
+                <div class="row">
+                    <div class="col-md-3"></div>
+                    <div class="col-md-6">Add Quotation</div>
+                    <div class="col-md-3"></div>
+                </div>
+                <br>
+                <div class="row">
+                    <div class="col-md-4">Item</div>
+                    <div class="col-md-4">Qty</div>
+                    <div class="col-md-4">Price</div>
+                </div>
+                <div class="row">
+                    <div class="col-md-4"><input type="text" name="item"></div>
+                    <div class="col-md-4"><input type="text" name="qty"></div>
+                    <div class="col-md-4"><input type="text" name="price"></div>
+                </div>
+                <div class="row">
+                    <div class="col-md-4"></div>
+                    <div class="col-md-4"><button type="submit">Submit</button></div>
+                    <div class="col-md-4"></div>
+                </div>
+                <br>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+
 <img src="Admin/gallery/logo/logo.png" id="img">
 hello
 </div>
@@ -53,7 +70,6 @@ hello
 <a href="{% url 'admin_view_pdf' %}">Dashboard</a>
 </div>
 
-<button type="submit">Add</button>
 
 
 {% endblock %}

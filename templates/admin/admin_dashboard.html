@@ -86,13 +86,13 @@
 
             <ul class="dropdown-menu dropdown-menu-end">
 <li><a class="dropdown-item" href=""><i class="fa fa-key"></i> Reset Password</a></li>
-                <li><a class="dropdown-item text-danger" href=""><i class="fa fa-right-from-bracket"></i> Log out</a></li>
+                <li><a class="dropdown-item text-danger" href="{% url 'Admin_logout' %}"><i class="fa fa-right-from-bracket"></i> Log out</a></li>
             </ul>
         </div>
     </nav>
 
  <!-- Main Content -->
-    <div class="main-content" style="background-color: brown; height: 500px;">
+    <div class="main-content">
         {% block content %}
 
 

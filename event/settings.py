@@ -38,7 +38,8 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'adminapp',
-    'userapp'
+    'userapp',
+    'homeapp'
 ]
 
 MIDDLEWARE = [
@@ -74,16 +75,16 @@ WSGI_APPLICATION = 'event.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/6.0/ref/settings/#databases
 
-# DATABASES = {
-#     'default': {
-#         'ENGINE': 'django.db.backends.mysql',
-#         'NAME': '',
-#         'USER':'',
-#         'PASSWORD':'',
-#         'HOST':'localhost',
-#         'PORT':'3306'
-#     }
-# }
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.mysql',
+        'NAME': 'event',
+        'USER':'root',
+        'PASSWORD':'',
+        'HOST':'localhost',
+        'PORT':'3306'
+    }
+}
 
 
 # Password validation
@@ -125,4 +126,11 @@ STATICFILES_DIRS = [os.path.join(BASE_DIR, 'static')]
 
 MEDIA_URL = 'image/'
 MEDIA_ROOT = os.path.join(BASE_DIR,'media')
+
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = "smtp.gmail.com"
+EMAIL_PORT = 587
+EMAIL_USE_TLS = True
+EMAIL_HOST_USER = "altos.tech.mail@gmail.com"
+EMAIL_HOST_PASSWORD = "fiuqfsvbjovvxooy"
 
