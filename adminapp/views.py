@@ -15,7 +15,7 @@ from django.core.files import File
 from django.core.mail import send_mail
 from django.core.files.storage import FileSystemStorage
 from django.db.models import Sum
-from .models import *
+from homeapp.models import *
 from .views import *
 from homeapp.views import *
 
@@ -80,3 +80,37 @@ def admin_view_pdf(request):
        return HttpResponse('We had some errors <pre>' + html + '</pre>')
     return response
 
+#Add Decor Items
+def admin_ajax_add_quotation(request):
+    if 'A_id' in request.session:
+        if request.session.has_key('A_id'):
+            A_id = request.session['A_id']
+        else:
+            return redirect('/')
+        
+        desig = login_register.objects.get(id=A_id)
+
+        if request.method=='POST':
+            Add_items = admin_decor_items()
+            Add_items.item_name = request.POST.get('item')
+            Add_items.item_qty = request.POST.get('qty')
+            Add_items.item_price = request.POST.get('price')
+            Add_items.branch_id = desig.branch.id
+            Add_items.department_id = desig.department.id
+            Add_items.designation_id = desig.designation.id
+            Add_items.admin_id = A_id
+            Add_items.item_advance = request.POST.get('advance')
+            
+            Add_items.item_total = int(Add_items.item_qty) * int(Add_items.item_price) 
+            Add_items.item_final_amount = int(Add_items.item_total) - int(Add_items.item_advance) 
+
+
+
+            Add_items.save()
+            return redirect('admin_view_document')
+        else:
+            return JsonResponse({'success': False, 'message': 'Invalid request method'})
+    else:
+            return redirect('/')
+
+    

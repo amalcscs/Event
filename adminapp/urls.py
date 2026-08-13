@@ -28,6 +28,9 @@ urlpatterns = [
 
     #View Document Page
     re_path( r'^admin_view_pdf/$', views.admin_view_pdf, name='admin_view_pdf'),
+
+    #Add Decor Items
+    re_path( r'^admin_ajax_add_quotation/$', views.admin_ajax_add_quotation, name='admin_ajax_add_quotation'),
     
     
     
