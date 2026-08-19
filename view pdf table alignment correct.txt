@@ -1,0 +1,9 @@
+hospital6 python django project il pdf download cheyth kazhinj view cheyumbol table alignment coreect allayirunu
+ath correct aya project aanu ith
+
+adminreferral_pdf.html
+managerreferral_pdf.html
+superadminreferral_pdf.html
+
+Username: manager01
+Password: Fathi@123

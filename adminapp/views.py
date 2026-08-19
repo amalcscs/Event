@@ -1,7 +1,7 @@
 from django.shortcuts import render,redirect
 from .models import *;
 from django.conf import settings
-from django.http import HttpResponse
+from django.http import HttpResponse,JsonResponse
 from django.template.loader import get_template
 from xhtml2pdf import pisa
 import os
@@ -46,8 +46,17 @@ def admin_dashboard(request):
     return render(request,'admin/admin_dashboard.html')
 
 #Add Document, list Document Page
-def admin_view_document(request):
-    return render(request,'admin/admin_view_document.html')
+def admin_view_list(request):
+    if 'A_id' in request.session:
+        if request.session.has_key('A_id'):
+            A_id = request.session['A_id']
+        else:
+            return redirect('/')
+        
+        view_customer = admin_Customer.objects.filter(admin_id=A_id)
+        return render(request,'admin/admin_view_list.html',{'cust':view_customer})
+    else:
+        return redirect('/')
 
 #View Document Page
 def admin_view_pdf(request):
@@ -80,8 +89,23 @@ def admin_view_pdf(request):
        return HttpResponse('We had some errors <pre>' + html + '</pre>')
     return response
 
+#Add Document Page
+def admin_document(request,id):
+    if 'A_id' in request.session:
+        if request.session.has_key('A_id'):
+            A_id = request.session['A_id']
+        else:
+            return redirect('/')
+        
+        view_customer = admin_Customer.objects.filter(id=id)
+        item = admin_decor_items.objects.filter(customer_id=id)
+        custid = admin_decor_items.objects.filter(customer_id=id)
+        return render(request,'admin/admin_document.html',{'cust':view_customer,'custid':custid,'item':item})
+    else:
+        return redirect('/')
+
 #Add Decor Items
-def admin_ajax_add_quotation(request):
+def admin_ajax_add_customer(request):
     if 'A_id' in request.session:
         if request.session.has_key('A_id'):
             A_id = request.session['A_id']
@@ -91,6 +115,34 @@ def admin_ajax_add_quotation(request):
         desig = login_register.objects.get(id=A_id)
 
         if request.method=='POST':
+            Add_cust = admin_Customer()
+            Add_cust.customer_name = request.POST.get('custname')
+            Add_cust.customer_address = request.POST.get('custaddress')
+            Add_cust.customer_contact = request.POST.get('custcontact')
+            Add_cust.customer_advance = request.POST.get('custadvance')
+            Add_cust.admin_id = A_id
+            Add_cust.save()
+            return redirect('admin_view_document')
+        else:
+            return JsonResponse({'success': False, 'message': 'Invalid request method'})
+    else:
+            return redirect('/')
+
+#Add Decor Items Ajax
+def admin_ajax_add_quotation(request):
+    if 'A_id' in request.session:
+        if request.session.has_key('A_id'):
+            A_id = request.session['A_id']
+        else:
+            return redirect('/')
+        
+        desig = login_register.objects.get(id=A_id)
+        adv = admin_Customer.objects.filter(id=A_id)
+        ftotal = admin_decor_items.objects.filter(id=A_id,customer_id=adv.id)
+        for j in ftotal:
+            t=sum(j.item_total)
+        advamt = 1000
+        if request.method=='POST':
             Add_items = admin_decor_items()
             Add_items.item_name = request.POST.get('item')
             Add_items.item_qty = request.POST.get('qty')
@@ -99,10 +151,9 @@ def admin_ajax_add_quotation(request):
             Add_items.department_id = desig.department.id
             Add_items.designation_id = desig.designation.id
             Add_items.admin_id = A_id
-            Add_items.item_advance = request.POST.get('advance')
-            
+            Add_items.customer_id = request.POST.get('cid')
             Add_items.item_total = int(Add_items.item_qty) * int(Add_items.item_price) 
-            Add_items.item_final_amount = int(Add_items.item_total) - int(Add_items.item_advance) 
+            Add_items.item_final_amount = int(Add_items.item_total) - advamt
 
 
 
@@ -113,4 +164,61 @@ def admin_ajax_add_quotation(request):
     else:
             return redirect('/')
 
+#Add Decor Items 
+# def admin_ajax_add_quotation(request,id):
+#     if 'A_id' in request.session:
+#         if request.session.has_key('A_id'):
+#             A_id = request.session['A_id']
+#         else:
+#             return redirect('/')
+        
+#         desig = login_register.objects.get(id=A_id)
+
+#         if request.method=='POST':
+#             Add_items = admin_decor_items()
+#             Add_items.item_name = request.POST.get('item')
+#             Add_items.item_qty = request.POST.get('qty')
+#             Add_items.item_price = request.POST.get('price')
+#             Add_items.branch_id = desig.branch.id
+#             Add_items.department_id = desig.department.id
+#             Add_items.designation_id = desig.designation.id
+#             Add_items.admin_id = A_id
+#             Add_items.customer_id = id
+            
+#             Add_items.item_total = int(Add_items.item_qty) * int(Add_items.item_price) 
+#             # Add_items.item_final_amount = int(Add_items.item_total) - int(Add_items.item_advance) 
+
+
+
+#             Add_items.save()
+#             return JsonResponse({
+#                 'success': True,
+#                 'message': 'Quotation added successfully'
+#             })
+#         else:
+#             return JsonResponse({'success': False, 'message': 'Invalid request method'})
+#     else:
+#             return redirect('/')
+
+#Add Advance And Form Sbmit
+def admin_add_AdvanceAndFormSubmit(request):
+    if 'A_id' in request.session:
+        if request.session.has_key('A_id'):
+            A_id = request.session['A_id']
+        else:
+            return redirect('/')    
+        items = admin_decor_items.objects.filter(customer_id=id)
+        a=[]
+        a=items
+        
+        if request.method=='POST':
+            Add_quot = admin_bill_amount()
+            for j in a:
+                Add_quot.item_final_amount = sum(1+9)
+             
+
+
+            Add_quot.save()
+            return redirect('admin_view_list')
+        
     

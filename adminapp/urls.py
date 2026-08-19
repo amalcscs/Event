@@ -24,13 +24,22 @@ urlpatterns = [
     re_path(r'^$', views.admin_dashboard, name='admin_dashboard'),
 
     #Add Document, list Document Page
-    re_path(r'^admin_view_document/$', views.admin_view_document, name='admin_view_document'),
+    re_path(r'^admin_view_list/$', views.admin_view_list, name='admin_view_list'),
 
     #View Document Page
     re_path( r'^admin_view_pdf/$', views.admin_view_pdf, name='admin_view_pdf'),
 
+    #Add Document Page
+    re_path( r'^admin_document/(?P<id>\d+)$', views.admin_document, name='admin_document'),
+
+    #Add Customer
+    re_path( r'^admin_ajax_add_customer/$', views.admin_ajax_add_customer, name='admin_ajax_add_customer'),
+
     #Add Decor Items
     re_path( r'^admin_ajax_add_quotation/$', views.admin_ajax_add_quotation, name='admin_ajax_add_quotation'),
+
+    #Add Advance And Form Submit
+    re_path( r'^admin_add_AdvanceAndFormSubmit/$', views.admin_add_AdvanceAndFormSubmit, name='admin_add_AdvanceAndFormSubmit'),
     
     
     
