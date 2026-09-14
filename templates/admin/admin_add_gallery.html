@@ -1,0 +1,72 @@
+{% extends "admin/admin_dashboard.html" %}
+{% load static %}
+
+{% block content %}
+<center>
+<form method="post" action=" " id="" autocomplete="off" enctype="multipart/form-data">
+                    {% csrf_token %}
+
+                <input type="hidden" id="cid" value="{{cust.id}}">
+                <div class="row">
+                    <div class="col-md-6">Image Name
+                        <br>
+                        <input type="text" id="img_name">
+                    </div>
+                    <div class="col-md-6">Gallery
+                        <br>
+                        <input type="file" id="img">
+                    </div>
+                </div>
+                
+                <div class="row">
+                    <div class="col-md-4"></div>
+                    <div class="col-md-4"><button type="submit" id="admin_add_gallery_save">Submit</button></div>
+                    <div class="col-md-4"></div>
+                </div>
+                <br>
+            </div>
+
+        </form>
+
+</center>
+
+
+<script>
+$(document).on("click", "#admin_add_gallery_save", function () {
+
+    var formData = new FormData();
+
+    formData.append("cid", $("#cid").val());
+    formData.append("img_name", $("#img_name").val());
+
+    var image = $("#img")[0].files[0];
+
+    if (image) {
+        formData.append("img", image);
+    }
+
+    formData.append("csrfmiddlewaretoken", "{{ csrf_token }}");
+
+    $.ajax({
+        type: "POST",
+        url: "{% url 'admin_ajax_add_gallery_save' %}",
+        data: formData,
+        processData: false,
+        contentType: false,
+
+        success: function (response) {
+            console.log(response);
+            alert("Image saved successfully");
+        },
+
+        error: function (xhr) {
+            console.log(xhr.responseText);
+            alert("Error saving image");
+        }
+    });
+});
+
+</script>
+
+
+{% endblock %}

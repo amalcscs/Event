@@ -27,7 +27,7 @@ urlpatterns = [
     re_path(r'^admin_view_list/$', views.admin_view_list, name='admin_view_list'),
 
     #View Document Page
-    re_path( r'^admin_view_pdf/$', views.admin_view_pdf, name='admin_view_pdf'),
+    re_path( r'^admin_view_pdf/(?P<id>\d+)$', views.admin_view_pdf, name='admin_view_pdf'),
 
     #Add Document Page
     re_path( r'^admin_document/(?P<id>\d+)$', views.admin_document, name='admin_document'),
@@ -35,11 +35,21 @@ urlpatterns = [
     #Add Customer
     re_path( r'^admin_ajax_add_customer/$', views.admin_ajax_add_customer, name='admin_ajax_add_customer'),
 
+    #Add Category
+    re_path( r'^admin_add_category/$', views.admin_add_category, name='admin_add_category'),
+
     #Add Decor Items
     re_path( r'^admin_ajax_add_quotation/$', views.admin_ajax_add_quotation, name='admin_ajax_add_quotation'),
 
-    #Add Advance And Form Submit
-    re_path( r'^admin_add_AdvanceAndFormSubmit/$', views.admin_add_AdvanceAndFormSubmit, name='admin_add_AdvanceAndFormSubmit'),
+    #Add Decor Sub Items
+    re_path( r'^admin_ajax_add_subitem/$', views.admin_ajax_add_subitem, name='admin_ajax_add_subitem'),
+    
+    #Gallery
+    re_path( r'^admin_add_gallery/(?P<id>\d+)$', views.admin_add_gallery, name='admin_add_gallery'),
+
+    #Add Gallery
+    re_path( r'^admin_ajax_add_gallery_save/$', views.admin_ajax_add_gallery_save, name='admin_ajax_add_gallery_save'),
+
     
     
     

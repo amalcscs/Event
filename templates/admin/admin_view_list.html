@@ -23,6 +23,8 @@
             <th>Customer Contact</th>
             <th>Customer Advance</th>
             <th>Quotation</th>
+            <th>Gallery</th>
+            <th>Download</th>
             <th>Action</th>
         </tr>
         {% for i in cust %}
@@ -33,6 +35,12 @@
             <td>{{i.customer_advance}}</td>
             <td>
             <a href="{% url 'admin_document' i.id %}" type="button" class="btn btn-success"><i class="mdi mdi-check"></i>&nbsp; Add Quotation</a>
+            </td>
+            <td>
+            <a href="{% url 'admin_add_gallery' i.id %}" type="button" class="btn btn-success"><i class="mdi mdi-check"></i>&nbsp; Add Gallery</a>
+            </td>
+            <td>
+            <a href="{% url 'admin_view_pdf' i.id %}" type="button" class="btn btn-success"><i class="mdi mdi-check"></i>&nbsp; Download Quotation</a>
             </td>
             <td>
             <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target=""><i class="mdi mdi-check"></i>&nbsp; Remove</button>
@@ -68,6 +76,26 @@
                     </div>
                 </div>
                 <div class="row">
+                    <div class="col-md-6">Venue
+                        <br>
+                        <input type="text" id="custvenue">
+                    </div>
+                    <div class="col-md-6">Date
+                        <br>
+                        <input type="date" id="custdate">
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-6">Theme
+                        <br>
+                        <input type="text" id="custtheme">
+                    </div>
+                    <div class="col-md-6">Function
+                        <br>
+                        <input type="text" id="custfunction">
+                    </div>
+                </div>
+                <div class="row">
                     <div class="col-md-6">Contact
                         <br>
                         <input type="text" id="custcontact">
@@ -93,11 +121,6 @@
 <br>
 
 
-<img src="Admin/gallery/logo/logo.png" id="img">
-hello
-
-
-<a href="{% url 'admin_view_pdf' %}">Dashboard</a>
 
 
 
@@ -109,10 +132,14 @@ $(document).on("click", "#admin_ajax_add_customer_save", function(){
 $.ajax({
 
     type : 'POST',
-    url:"{% url 'admin_ajax_add_quotation' %}",
+    url:"{% url 'admin_ajax_add_customer' %}",
     data:{
         custname : $('#custname').val(),
         custaddress : $('#custaddress').val(),
+        custvenue : $('#custvenue').val(),
+        custdate : $('#custdate').val(),
+        custtheme : $('#custtheme').val(),
+        custfunction : $('#custfunction').val(),
         custcontact : $('#custcontact').val(),
         custadvance : $('#custadvance').val(),
 

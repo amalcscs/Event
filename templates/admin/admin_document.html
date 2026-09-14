@@ -24,20 +24,67 @@
                 <form method="post" action="" id="" autocomplete="off" enctype="multipart/form-data">
                     {% csrf_token %}
                         <input type="hidden" id="cid" value="{{cust.id}}">
+                        <input type="hidden" id="cadv" value="{{cust.customer_advance}}">
                             <table class="table   table-bordered ">
                                 <tr>
+                                    <th width="">Category</th>
                                     <th width="">Item</th>
                                     <th width="">Qty</th>
                                     <th width="">Price</th>
                                     <th width="">Action</th>
                                 </tr>
                                 <tr>
+                                    <td>
+                                    <select class="" name="mcat" id="mcat" required>
+                                        <option>--Select--</option>
+                                        
+                                        {%for j in cat%}
+                                        <option value="{{j.id}}">{{j.category}}</option>
+                                        {%endfor%}
+                                    </select>
+                                    </td>
                                     <td><input type="text" id="item"></td>
                                     <td><input type="text" id="qty"></td>
                                     <td><input type="text" id="price"></td>
                                     <td><button type="submit" id="admin_ajax_add_document_save">Add</button></td>
                                 </tr>
-                            </table>
+                                </table>
+
+                                <table class="table   table-bordered ">
+                                <tr>
+                                    <th width="">Category</th>
+                                    <th width="">Item</th>
+                                    <th width="">Sub Item</th>
+                                    <th width="">Sub Qty</th>
+                                    <th width="">Sub Price</th>
+                                    <th width="">Action</th>
+                                </tr>
+                                <tr>
+                                    <td>
+                                    <select class="" name="mscat" id="mscat" required>
+                                        <option>--Select--</option>
+                                        
+                                        {%for s in cat%}
+                                        <option value="{{s.id}}">{{s.category}}</option>
+                                        {%endfor%}
+                                    </select>
+                                    </td>
+                                    <td><select class="" name="mitem" id="mitem" required>
+                                        <option>--Select--</option>
+                                        
+                                        {%for i in item%}
+                                        <option value="{{i.id}}">{{i.item_name}}</option>
+                                        {%endfor%}
+                                    </select>
+                                    </td>
+                                    <td><input type="text" id="sitem"></td>
+                                    <td><input type="text" id="sqty"></td>
+                                    <td><input type="text" id="sprice"></td>
+                                    <td><button type="submit" id="admin_ajax_add_subitem_save">Add</button></td>
+                                </tr>
+                                </table>
+
+                                
                 </form>
 
 <br>
@@ -45,6 +92,7 @@
                     <thead >
                         <tr>
                             <th scope="col">Item</th>
+                            <th scope="col">Sub Item</th>
                             <th scope="col">Qty</th>
                             <th scope="col">Price</th>
                             <th scope="col">Action</th>
@@ -54,6 +102,7 @@
                         {% for i in item %}
                         <tr>
                             <td>{{i.item_name}}</td>
+                            <td>{{i.item_name}}</td>
                             <td>{{i.item_qty}}</td>
                             <td>{{i.item_price}}</td>
                             <td><button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target=""><i class="mdi mdi-check"></i>&nbsp; Remove</button></td>
@@ -61,13 +110,7 @@
                         {% endfor %}
                     </tbody>
                 </table>
-            <form method="post" action="{% url 'admin_add_AdvanceAndFormSubmit' %}" id="" autocomplete="off" enctype="multipart/form-data">
-                {% csrf_token %}    
-                <div class="row">
-                <div class="col-md-6"><span style="color: red;font-style: italic;">Click here to Complete your Adding Quotation</span></div>
-                <div class="col-md-6"><button type="submit" class="btn btn-primary" data-bs-toggle="modal" >Submit</button></div>
-                </div>
-            </form>
+            
             
 
             </div>
@@ -75,12 +118,6 @@
 
 {% endif %}
 
-
-<img src="Admin/gallery/logo/logo.png" id="img">
-hello
-
-
-<a href="{% url 'admin_view_pdf' %}">Dashboard</a>
 
 
 
@@ -94,10 +131,36 @@ $.ajax({
     type : 'POST',
     url:"{% url 'admin_ajax_add_quotation' %}",
     data:{
+        mcat : $('#mcat').val(),
         item : $('#item').val(),
         qty : $('#qty').val(),
         price : $('#price').val(),
         cid : $('#cid').val(),
+        cadv : $('#cadv').val(),
+
+        csrfmiddlewaretoken: '{{ csrf_token }}',
+    },
+   
+    
+});  
+} 
+);
+
+
+$(document).on("click", "#admin_ajax_add_subitem_save", function(){
+
+$.ajax({
+
+    type : 'POST',
+    url:"{% url 'admin_ajax_add_subitem' %}",
+    data:{
+        mscat : $('#mscat').val(),
+        mitem : $('#mitem').val(),
+        sitem : $('#sitem').val(),
+        sqty : $('#sqty').val(),
+        sprice : $('#sprice').val(),
+        cid : $('#cid').val(),
+        cadv : $('#cadv').val(),
 
         csrfmiddlewaretoken: '{{ csrf_token }}',
     },

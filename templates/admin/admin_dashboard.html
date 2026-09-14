@@ -6,7 +6,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dashboard - Digitra</title>
+    <title>Events</title>
 
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
@@ -29,26 +29,22 @@
     <h3 class="logo-text">Event</h3>
 
     <div class="sidebar-profile mt-3">
-        <img src="{% static 'User/gallery/logo/face.png' %}" id="dashboard_profile_pic">
-        <h4 class="sidebar-name">test</h4>
-        <p class="sidebar-role">test1</p>
+        <img src="{{ log.profile_pic }}">
+        <h4 class="sidebar-name">{{log.name}}</h4>
+        <p class="sidebar-role">{{log.designation_id}}</p>
     </div>
 
     <ul class="sidebar-menu">
-        <li><a href="{% url 'admin_view_list' %}"><i class="fa-solid fa-chart-line"></i> View Document</a></li>
+        <li><a href="{% url 'admin_view_list' %}"><i class="fa-solid fa-chart-line"></i>Document</a></li>
         <li class="dropdown">
             <a href="#" class="dropdown-toggle" data-bs-toggle="collapse" data-bs-target="#companyMenu">
-                <i class="fa-solid fa-building"></i> Company
+                <i class="fa-solid fa-building"></i> Category
             </a>
 
             <ul id="companyMenu" class="collapse">
-                <li><a href="">Login Request</a></li>
-                <li><a href="">Departments</a></li>
-                <li><a href="">Designations</a></li>
+                <li><a href="{% url 'admin_add_category' %}">Add Category</a></li>
             </ul>
-        </li>
-        <li><a href=""><i class="fa-solid fa-users"></i> Employees</a></li>
-        <li><a href=""><i class="fa-solid fa-database"></i> Data Bank</a></li>
+        </li> 
     </ul>
 </aside>
 
@@ -80,8 +76,8 @@
 
         <div class="dropdown">
             <button class="btn profile-btn dropdown-toggle" data-bs-toggle="dropdown">
-                <img src="{% static 'User/gallery/logo/face.png' %}" class="nav-profile-img">
-                <span>test</span>
+                <img src="{{ log.profile_pic }}" class="nav-profile-img">
+                <span>{{log.name}}</span>
             </button>
 
             <ul class="dropdown-menu dropdown-menu-end">

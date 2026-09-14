@@ -1,0 +1,35 @@
+def admin_ajax_add_quotation(request):
+    if 'A_id' in request.session:
+        if request.session.has_key('A_id'):
+            A_id = request.session['A_id']
+        else:
+            return redirect('/')
+        
+        desig = login_register.objects.get(id=A_id)
+        
+        if request.method=='POST':
+            Add_items = admin_decor_items()
+            Add_items.item_name = request.POST.get('item')
+            Add_items.item_qty = request.POST.get('qty')
+            Add_items.item_price = request.POST.get('price')
+            Add_items.branch_id = desig.branch.id
+            Add_items.department_id = desig.department.id
+            Add_items.designation_id = desig.designation.id
+            Add_items.admin_id = A_id
+            
+            cust_adv = request.POST.get('cadv')
+            Add_items.customer_id = request.POST.get('cid')
+            # if 4 == cust_id:
+            #     adv1 = adv.customer_advance
+            total = int(Add_items.item_qty) * int(Add_items.item_price) 
+            Add_items.item_total = total
+            cust_adv = cust_adv if cust_adv is not None else 0
+            Add_items.item_final_amount = int(total - cust_adv)
+
+
+            Add_items.save()
+            return redirect('admin_view_document')
+        else:
+            return JsonResponse({'success': False, 'message': 'Invalid request method'})
+    else:
+            return redirect('/')

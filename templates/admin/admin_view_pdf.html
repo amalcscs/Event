@@ -38,6 +38,14 @@ body {
     font-weight: 900;
     font-style: italic;
 }
+#img_heading {
+    color: yellow;
+    font-family: 'Courier New', Courier, monospace;
+    font-size: 30px;
+    font-weight: 900;
+    font-style: italic;
+    padding: 8mm 5mm;
+}
 .first-table {
     width: 100%;
     border-collapse: collapse;
@@ -76,6 +84,10 @@ body {
     padding: 5px;
 }
 
+.gallery-page-break {
+    page-break-before: always;
+}
+
 .gallery {
         width: 100%;
         border-collapse: collapse;
@@ -92,6 +104,41 @@ body {
         width: 50%;
         height: 4520px;
     }
+
+.image-box {
+    width: 90mm;
+    height: 65mm;
+    border: 2px solid #000;
+    border-radius: 80px;
+    overflow: hidden;
+    display: block;
+    margin: 0 auto;
+    object-fit: cover;
+}
+/* Table heading */
+    .table-heading {
+        background-color: #50C878;
+        text-align: center;
+        font-family:Arial, Helvetica, sans-serif;
+        font-size: larger;
+        font-weight: bolder;
+    }
+
+    /* Category heading */
+    .category-heading {
+    background-color: #8cc751;
+    text-align: center;
+    font-family:Arial, Helvetica, sans-serif;
+    font-size: larger;
+    font-weight: bolder;
+}
+.calc-table
+ {
+        background-color: #50C878;
+        font-family:Arial, Helvetica, sans-serif;
+        font-size: larger;
+        font-weight: bolder;
+    }
 /* .big-dot {
     font-size: 20px;
     margin-right: 3px;
@@ -104,35 +151,66 @@ body {
     <br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
     <center id="heading">QUOTATION</center>
     <br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
-    <br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
+    <br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
 
     <!-- Client Details and Account Details Section -->
 
     <table class="first-table">
         <tr>
-        <td><b>INVOICE NO:Test name </b></td>
-        <td><b>BANK NAME:</b></td>
+        <td width="20%"><b>INVOICE NO</b></td>
+        <td width="60%" style="font-family:Arial, Helvetica, sans-serif;font-size: larger;"><b>:</b></td>
+        <td width="40%"><b></b></td>
+        <td width="20%"><b>BANK NAME</b></td>
+        <td width="60%" style="font-family:Arial, Helvetica, sans-serif;font-size: larger;"><b>:</b></td>
         </tr>
         <tr>
-        <td><b>NAME:</b></b></td>
-        <td><b>ACCOUNT NUMBER:</b></td>
+        <td width="20%"><b>NAME</b></td>
+        <td width="60%" style="font-family:Arial, Helvetica, sans-serif;font-size: larger;"><b>:</b>  {{cus.customer_name}}</td>
+        <td width="40%"><b></b></td>
+        <td width="20%"><b>ACCOUNT NUMBER</b></td>
+        <td width="60%" style="font-family:Arial, Helvetica, sans-serif;font-size: larger;"><b>:</b></td>
         </tr>
         <tr>
-        <td><b>ADDRESS:<b><c>Test addressTest addressTest addressTest addressTest addressTest addressTest addressTest address</c></td>
-        <td><b>IFSC:</b></td>
+        <td width="20%"><b>ADDRESS<b></td>
+        <td width="60%" style="font-family:Arial, Helvetica, sans-serif;font-size: larger;"><b>:</b>  {{cus.customer_address}}</td>
+        <td width="40%"><b></b></td>
+        <td width="20%"><b>IFSC</b></td>
+        <td width="60%" style="font-family:Arial, Helvetica, sans-serif;font-size: larger;"><b>:</b></td>
         </tr>
         <tr>
-        <td><b>VENUE:</b></td>
-        <td><b>ACCOUNT HOLDER:</b></td>
+        <td width="20%"><b>VENUE</b></td>
+        <td width="60%" style="font-family:Arial, Helvetica, sans-serif;font-size: larger;"><b>:</b>  {{cus.customer_venue}}</td>
+        <td width="40%"><b></b></td>
+        <td width="20%"><b>ACCOUNT HOLDER</b></td>
+        <td width="60%" style="font-family:Arial, Helvetica, sans-serif;font-size: larger;"><b>:</b></td>
         </tr>
         <tr>
-        <td><b>DATE:</b></td>
+        <td width="20%"><b>DATE</b></td>
+        <td width="60%" style="font-family:Arial, Helvetica, sans-serif;font-size: larger;"><b>:</b>  {{cus.customer_date}}</td>
+        <td width="40%"><b></b></td>
+        <td width="20%"><b></b></td>
+        <td width="60%"><b></b></td>
         </tr>
         <tr>
-        <td><b>THEME:</b></td>
+        <td width="20%"><b>THEME</b></td>
+        <td width="60%" style="font-family:Arial, Helvetica, sans-serif;font-size: larger;"><b>:</b>  {{cus.customer_theme}}</td>
+        <td width="40%"><b></b></td>
+        <td width="20%"><b></b></td>
+        <td width="60%"><b></b></td>
         </tr>
         <tr>
-        <td><b>FUNCTION:</b></td>
+        <td width="20%"><b>FUNCTION</b></td>
+        <td width="60%" style="font-family:Arial, Helvetica, sans-serif;font-size: larger;"><b>:</b>  {{cus.customer_function_type}}</td>
+        <td width="40%"><b></b></td>
+        <td width="20%"><b></b></td>
+        <td width="60%"><b></b></td>
+        </tr>
+        <tr>
+        <td width="20%"><b>CONTACT</b></td>
+        <td width="60%" style="font-family:Arial, Helvetica, sans-serif;font-size: larger;"><b>:</b>  {{cus.customer_contact}}</td>
+        <td width="40%"><b></b></td>
+        <td width="20%"><b></b></td>
+        <td width="60%"><b></b></td>
         </tr>
 
         
@@ -143,33 +221,87 @@ body {
     <!-- Item Details -->
 
 <div class="table-container">
+
     <table class="border-table">
-        <tr>
-        <th width="10%"><b>NO:</b></td>
-        <th><b>ITEM</b></td>
-        <th width="10%"><b>QTY</b></td>
-        <th width="30%"><b>PRICE</b></td>
+
+        <!-- HEADER - DISPLAY ONLY ONCE -->
+        <tr class="table-heading">
+            <th width="10%"><b>NO:</b></th>
+            <th><b>ITEM</b></th>
+            <th width="10%"><b>QTY</b></th>
+            <th width="30%"><b>PRICE</b></th>
         </tr>
-        <tr>
-        <td width="10%"></td>
-        <td>Stage</td>
-        <td width="10%"></td>
-        <td width="30%">50000</td>
-        </tr>
-        <tr>
-        <td width="10%">1</td>
-        <td><span class="big-dot">●</span></td>
-        <td width="10%">1</td>
-        <td width="30%">50000</td>
-        </tr>
-        <tr>
-        <td width="10%"></td>
-        <td><span class="big-dot">●</span></td>
-        <td width="10%">1</td>
-        <td width="30%">50000</td>
-        </tr>
+
+
+        <!-- CATEGORY -->
+        {% for c in cat %}
+
+            {% for i in mitem %}
+
+                {% if i.item_category_id == c.id %}
+
+                    <!-- Display category only before its first item -->
+                    {% ifchanged i.item_category_id %}
+                       <center> <tr>
+                            <td colspan="4" class="category-heading">
+                                {{ c.category }}
+                            </td>
+                        </tr>
+                        </center>
+                    {% endifchanged %}
+
+
+                    <!-- ITEM -->
+                    <tr>
+                        <td width="10%">
+                            {{ forloop.counter }}
+                        </td>
+
+                        <td>
+                            <b>{{ i.item_name }}</b>
+
+                            <!-- SUB ITEMS -->
+                            {% for j in sitem %}
+                                {% if j.item_id == i.id %}
+                                    <br>
+                                    &nbsp;&nbsp;● {{ j.subitem }}
+                                {% endif %}
+                            {% endfor %}
+                        </td>
+
+                        <td width="10%">
+                            {{ i.item_qty }}
+
+                            <!-- SUB ITEM QTY -->
+                            {% for j in sitem %}
+                                {% if j.item_id == i.id %}
+                                    <br>
+                                    &nbsp;&nbsp;{{ j.sitem_qty }}
+                                {% endif %}
+                            {% endfor %}
+                        </td>
+
+                        <td width="30%">
+                            {{ i.item_price }}
+
+                            <!-- SUB ITEM PRICE -->
+                            {% for j in sitem %}
+                                {% if j.item_id == i.id %}
+                                    <br>
+                                    &nbsp;&nbsp;{{ j.sitem_price }}
+                                {% endif %}
+                            {% endfor %}
+                        </td>
+                    </tr>
+
+                {% endif %}
+
+            {% endfor %}
+
+        {% endfor %}
+
     </table>
-    
+
 </div>
 
 <br>
@@ -178,64 +310,54 @@ body {
 
 <table class="calc-table">
         <tr>
-        <td  style="text-align: right;">Amount</td>
-        <td width="30%">50000</td>
+        <td  style="text-align: right;">TOTAL</td>
+        <td width="30%">{{cus.customer_total_amt}}</td>
         </tr>
         <tr>
-        <td  style="text-align: right;">Advance</td>
-        <td width="30%">50000</td>
+        <td  style="text-align: right;">ADVANCE</td>
+        <td width="30%">{{cus.customer_advance}}</td>
         </tr>
         <tr>
-        <td  style="text-align: right;">Payable Amount</td>
-        <td width="20%">50000</td>
+        <td  style="text-align: right;">PAYABLE AMOUNT</td>
+        <td width="20%" style="font-size: xx-large;">{{cus.customer_payable_amt}}</td>
         </tr>
        
     </table>
 <br><br><br>
+
+<!-- Next Page For displaying images -->
+<div class="gallery-page-break"></div>
+<br><br><br><br><br><br><br><br>
+
     <!-- Gallery -->
 
-    <table width="100%">
-
-
-
-   
+    <table width="100%" cellpadding="5" cellspacing="5" >
     <tr>
-  
+        {% for e in gall %}
+            <td width="50%" align="center" valign="top" >
+                <span id="img_heading">{{ e.img_name }}</span><br>
+                <img src="{{ e.rounded_img }}"
+                     width="400"
+                     height="300" />
 
-        <td>
-            <img src="{{ background1 }}">
-        </td>
+                
+                
+            </td>
 
-    
-    </tr>
-    
+            {% if forloop.counter|divisibleby:2 %}
+                </tr>
+                {% if not forloop.last %}
+                    <tr>
+                {% endif %}
+            {% endif %}
+        {% endfor %}
 
-
-
+        {# Close incomplete final row #}
+        {% if not galleries|length|divisibleby:2 %}
+            </tr>
+        {% endif %}
 </table>
 
-    <table class="gallery">
-
-
-
-   
-    <tr>
-  
-
-        <td>
-            <img src="{{ background1 }}">
-        </td>
-        <td>
-            <img src="{{ background1 }}">
-        </td>
-
-    
-    </tr>
-    
-
-
-
-</table>
 
 </body>
 </html>
