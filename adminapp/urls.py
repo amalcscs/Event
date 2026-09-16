@@ -35,8 +35,20 @@ urlpatterns = [
     #Add Customer
     re_path( r'^admin_ajax_add_customer/$', views.admin_ajax_add_customer, name='admin_ajax_add_customer'),
 
+    #Edit Customer
+    re_path( r'^admin_edit_customer/(?P<id>\d+)$', views.admin_edit_customer, name='admin_edit_customer'),
+
+    #Delete Customer
+    re_path( r'^admin_delete_customer/(?P<id>\d+)$', views.admin_delete_customer, name='admin_delete_customer'),
+
     #Add Category
     re_path( r'^admin_add_category/$', views.admin_add_category, name='admin_add_category'),
+
+    #Edit Category
+    re_path( r'^admin_edit_category/(?P<id>\d+)$', views.admin_edit_category, name='admin_edit_category'),
+    
+    #Delete Category
+    re_path( r'^admin_delete_category/(?P<id>\d+)$', views.admin_delete_category, name='admin_delete_category'),
 
     #Add Decor Items
     re_path( r'^admin_ajax_add_quotation/$', views.admin_ajax_add_quotation, name='admin_ajax_add_quotation'),

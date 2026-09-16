@@ -1,0 +1,77 @@
+{% extends "admin/admin_dashboard.html" %}
+{% load static %}
+
+{% block content %}
+<br>
+<center>EDIT</center>
+<br>
+    <div class="row">
+        <div class="col-md-2"></div>
+        <div class="col-md-8">
+            <form method="post" action="" id="" autocomplete="off" enctype="multipart/form-data">
+                    {% csrf_token %}
+
+                
+                <div class="row">
+                    <div class="col-md-6">Customer Name
+                        <br>
+                        <input type="text" name="custname" value="{{get_cust.customer_name}}">
+                    </div>
+                    <div class="col-md-6">Customer Address
+                        <br>
+                        <input type="text" name="custaddress"  value="{{get_cust.customer_address}}">
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-6">Venue
+                        <br>
+                        <input type="text" name="custvenue"  value="{{get_cust.customer_venue}}">
+                    </div>
+                    <div class="col-md-6">Date
+                        <br>
+                        <input type="date" name="custdate"  value="{{get_cust.customer_date}}">
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-6">Theme
+                        <br>
+                        <input type="text" name="custtheme"  value="{{get_cust.customer_theme}}">
+                    </div>
+                    <div class="col-md-6">Function
+                        <br>
+                        <input type="text" name="custfunction"  value="{{get_cust.customer_function_type}}">
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-6">Contact
+                        <br>
+                        <input type="text" name="custcontact"  value="{{get_cust.customer_contact}}">
+                    </div>
+                    <div class="col-md-6">Advance
+                        <br>
+                        <input type="text" name="custadvance"  value="{{get_cust.customer_advance}}">
+                    </div>
+                </div>
+    
+                <div class="row">
+                    <div class="col-md-4"></div>
+                    <div class="col-md-4"><button type="submit" id="">Submit</button></div>
+                    <div class="col-md-4"></div>
+                </div>
+                <br>
+            </div>
+
+        </form>
+
+         </form>
+
+        <div class="col-md-2"></div>
+
+       
+
+    </div>
+
+<br>
+
+    
+{% endblock %}

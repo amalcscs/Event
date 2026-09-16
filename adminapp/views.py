@@ -51,8 +51,8 @@ def admin_dashboard(request):
         else:
             return redirect('/')
         
-        log = login_register.objects.get(id=A_id)
-        return render(request,'admin/admin_dashboard.html',{'log':log})
+        Adm=login_register.objects.get(id= Adm.id)
+        return render(request,'admin/admin_dashboard.html',{'Adm':Adm})
     else:
         return redirect('/')
 
@@ -189,8 +189,8 @@ def admin_ajax_add_customer(request):
     else:
             return redirect('/')
 
-#Add customer
-def admin_add_category(request):
+#Edit category
+def admin_edit_customer(request,id):
     if 'A_id' in request.session:
         if request.session.has_key('A_id'):
             A_id = request.session['A_id']
@@ -198,15 +198,76 @@ def admin_add_category(request):
             return redirect('/')
         
         desig = login_register.objects.get(id=A_id)
+        get_cust = admin_Customer.objects.get(id=id)
+        if request.method=='POST':
+            edit_cust = admin_Customer.objects.get(id=id)
+            edit_cust.category = request.POST.get('edit_cat_name')
+            edit_cust.customer_name = request.POST.get('custname')
+            edit_cust.customer_address = request.POST.get('custaddress')
+            edit_cust.customer_venue = request.POST.get('custvenue')
+            edit_cust.customer_date = request.POST.get('custdate')
+            edit_cust.customer_theme = request.POST.get('custtheme')
+            edit_cust.customer_function_type = request.POST.get('custfunction')
+            edit_cust.customer_contact = request.POST.get('custcontact')
+            edit_cust.customer_advance = request.POST.get('custadvance')
+            edit_cust.admin_id = A_id
+            edit_cust.save()
+            return redirect('admin_view_list')
+        return render(request,'admin/admin_edit_customer.html',{'get_cust':get_cust})
+    else:
+            return redirect('/')
 
+#Delete Customer
+def admin_delete_customer(request,id):
+    cust = admin_Customer.objects.get(id=id)
+    cust.delete()
+    return redirect('admin_view_list')
+
+#Add category
+def admin_add_category(request):
+    if 'A_id' in request.session:
+        if request.session.has_key('A_id'):
+            A_id = request.session['A_id']
+        else:
+            return redirect('/')
+        
+        
+        desig = login_register.objects.get(id=A_id)
+        cate = admin_Category.objects.filter(admin_id=A_id)
+        
         if request.method=='POST':
             Add_cat = admin_Category()
             Add_cat.category = request.POST.get('cat_name')
             Add_cat.admin_id = A_id
             Add_cat.save()
-        return render(request,'admin/admin_add_category.html')
+        return render(request,'admin/admin_add_category.html',{'cate':cate})
     else:
             return redirect('/')
+
+#Edit category
+def admin_edit_category(request,id):
+    if 'A_id' in request.session:
+        if request.session.has_key('A_id'):
+            A_id = request.session['A_id']
+        else:
+            return redirect('/')
+        
+        desig = login_register.objects.get(id=A_id)
+        get_cate = admin_Category.objects.get(id=id)
+        if request.method=='POST':
+            edit_cat = admin_Category.objects.get(id=id)
+            edit_cat.category = request.POST.get('edit_cat_name')
+            edit_cat.admin_id = A_id
+            edit_cat.save()
+            return redirect('admin_add_category')
+        return render(request,'admin/admin_edit_category.html',{'get_cate':get_cate})
+    else:
+            return redirect('/')
+
+def admin_delete_category(request,id):
+    cat = admin_Category.objects.get(id=id)
+    cat.delete()
+    return redirect('admin_add_category')
 
 #Add Decor Items Ajax
 def admin_ajax_add_quotation(request):

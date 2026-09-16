@@ -19,20 +19,17 @@
     <table class="table   table-bordered">
         <tr>
             <th>Customer Name</th>
-            <th>Customer Address</th>
-            <th>Customer Contact</th>
-            <th>Customer Advance</th>
+            <th>Customer Details</th>
             <th>Quotation</th>
             <th>Gallery</th>
             <th>Download</th>
-            <th>Action</th>
+            <th>Edit</th>
+            <th>Delete</th>
         </tr>
         {% for i in cust %}
         <tr>
             <td>{{i.customer_name}}</td>
-            <td>{{i.customer_address}}</td>
-            <td>{{i.customer_contact}}</td>
-            <td>{{i.customer_advance}}</td>
+            <td><button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#myModalviewCustomerdetails{{ i.id }}"><i class="mdi mdi-check"></i>&nbsp; Details</button></td>
             <td>
             <a href="{% url 'admin_document' i.id %}" type="button" class="btn btn-success"><i class="mdi mdi-check"></i>&nbsp; Add Quotation</a>
             </td>
@@ -40,10 +37,13 @@
             <a href="{% url 'admin_add_gallery' i.id %}" type="button" class="btn btn-success"><i class="mdi mdi-check"></i>&nbsp; Add Gallery</a>
             </td>
             <td>
-            <a href="{% url 'admin_view_pdf' i.id %}" type="button" class="btn btn-success"><i class="mdi mdi-check"></i>&nbsp; Download Quotation</a>
+            <a href="{% url 'admin_view_pdf' i.id %}" type="button" class="btn btn-secondary"><i class="mdi mdi-check"></i>&nbsp; Download Quotation</a>
             </td>
             <td>
-            <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target=""><i class="mdi mdi-check"></i>&nbsp; Remove</button>
+            <a href="{% url 'admin_edit_customer' i.id %}" type="button" class="btn btn-danger"><i class="mdi mdi-check"></i>&nbsp; Edit</a>
+            </td>
+            <td>
+            <a href="{% url 'admin_delete_customer' i.id %}" type="button" class="btn btn-danger"><i class="mdi mdi-check"></i>&nbsp; Remove</a>
             </td>
         </tr>
         {% endfor %}
@@ -116,11 +116,78 @@
 
         </form>
     </div>
+</div>
+</div>
 
 </div>
 <br>
 
+<!-- Modal View Customer Details -->
 
+{% for i in cust %}
+ <div class="modal fade" id="myModalviewCustomerdetails{{ i.id }}">
+    <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title text-info">CUSTOMER DETAILS</h5>
+                    <button type="button" class="close text-light" data-bs-dismiss="modal" aria-label=""style="font-size: 20px;border:none;"><span aria-hidden="true">&times;</span></button>
+            </div>
+            <div class="table-responsive mt-3 mb-3 container">
+
+                <form method="post" action="" id="" autocomplete="off" enctype="multipart/form-data">
+                    {% csrf_token %}
+
+                
+                <div class="row">
+                    <div class="col-md-6">Customer Name
+                        <br>
+                        <span>{{i.customer_name}}</span>
+                    </div>
+                    <div class="col-md-6">Customer Address
+                        <br>
+                        <span>{{i.customer_address}}</span>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-6">Venue
+                        <br>
+                        <span>{{i.customer_venue}}</span>
+                    </div>
+                    <div class="col-md-6">Date
+                        <br>
+                        <span>{{i.customer_date}}</span>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-6">Theme
+                        <br>
+                        <span>{{i.customer_theme}}</span>
+                    </div>
+                    <div class="col-md-6">Function
+                        <br>
+                        <span>{{i.customer_function_type}}</span>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-6">Contact
+                        <br>
+                        <span>{{i.customer_contact}}</span>
+                    </div>
+                    <div class="col-md-6">Advance
+                        <br>
+                        <span>{{i.customer_advance}}</span>
+                    </div>
+                </div>
+    
+                <br>
+            </div>
+
+        </form>
+    </div>
+</div>
+</div>
+</div>
+{% endfor %}
 
 
 

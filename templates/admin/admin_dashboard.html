@@ -29,9 +29,9 @@
     <h3 class="logo-text">Event</h3>
 
     <div class="sidebar-profile mt-3">
-        <img src="{{ log.profile_pic }}">
-        <h4 class="sidebar-name">{{log.name}}</h4>
-        <p class="sidebar-role">{{log.designation_id}}</p>
+        <img src="{{ Adm.profile_pic.url }}">
+        <h4 class="sidebar-name">{{Adm.name}}</h4>
+        <p class="sidebar-role">{{Adm.designation.name}}</p>
     </div>
 
     <ul class="sidebar-menu">
@@ -76,8 +76,8 @@
 
         <div class="dropdown">
             <button class="btn profile-btn dropdown-toggle" data-bs-toggle="dropdown">
-                <img src="{{ log.profile_pic }}" class="nav-profile-img">
-                <span>{{log.name}}</span>
+                <img src="{{ Adm.profile_pic.url }}" class="nav-profile-img">
+                <span>{{Adm.name}}</span>
             </button>
 
             <ul class="dropdown-menu dropdown-menu-end">

@@ -76,7 +76,7 @@ def login(request):
             Adm=login_register.objects.get(email=request.POST['email'], password=request.POST['password'])
             request.session['A_id'] = Adm.designation_id
             request.session['A_id'] = Adm.id 
-            Adm=login_register.objects.filter(id= Adm.id)
+            Adm=login_register.objects.get(id= Adm.id)
             
             return render(request,'admin/admin_dashboard.html',{'Adm':Adm})
 
