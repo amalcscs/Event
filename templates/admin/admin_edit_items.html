@@ -1,0 +1,63 @@
+{% extends "admin/admin_index.html" %}
+{% load static %}
+
+{% block content %}
+
+<style>
+    table {
+        background-color: green;
+        
+    }
+</style>
+
+
+<br>
+
+<br>
+<center style="font-family: 'Courier New', Courier, monospace;font-size: xx-large;font-weight: bolder;">EDIT ITEMS</center>
+<br>
+
+ 
+            <div class="table-responsive mt-3 mb-3 container">
+
+                <form method="post" action="" id="" autocomplete="off" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    {% for n in cust %}
+                    {% if n.id == get_items.customer_id %}
+                    <input type="hidden" name="cadv" value="{{n.customer_advance}}">
+                    {% endif %}
+                    {% endfor %}
+                            <table class="table   table-bordered ">
+                                <tr>
+                                    <th width="">Category</th>
+                                    <th width="">Item</th>
+                                    <th width="">Qty</th>
+                                    <th width="">Price</th>
+                                    <th width="">Action</th>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <input type="text" value="{{get_items.item_category.category}}"><br>
+                                    <select class="" name="mcat" >
+                                        
+                                        
+                                        {%for j in cat%}
+                                        <option value="{{j.id}}">{{j.category}}</option>
+                                        {%endfor%}
+                                    </select>
+                                    </td>
+                                    <td><input type="text" name="item" value="{{get_items.item_name}}"></td>
+                                    <td><input type="text" name="qty" value="{{get_items.item_qty}}"></td>
+                                    <td><input type="text" name="price" value="{{get_items.item_price}}"></td>
+                                    <td><button type="submit">Update</button></td>
+                                </tr>
+                                </table>
+
+                              
+                </form>
+
+
+
+
+
+{% endblock %}

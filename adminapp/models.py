@@ -48,13 +48,14 @@ class admin_decor_items(models.Model):
     designation = models.ForeignKey(login_designation, on_delete=models.CASCADE,null=True,blank=True)
     item_category = models.ForeignKey(admin_Category, on_delete=models.CASCADE,null=True,blank=True)
     item_name = models.CharField(max_length=300,null=True,blank=True)
-    item_qty = models.IntegerField(default=1,null=True,blank=True)
-    item_price = models.IntegerField(default=1,null=True,blank=True)
+    item_qty = models.IntegerField(null=True,blank=True)
+    item_price = models.IntegerField(null=True,blank=True)
     item_total = models.IntegerField(default=1,null=True,blank=True)
 
     item_final_amount = models.IntegerField(default=0,null=True,blank=True)
     item_payable_amount = models.IntegerField(default=0,null=True,blank=True)
-    item_status = models.CharField(max_length=300,null=True,blank=True)
+    item_qty_status = models.CharField(max_length=300,null=True,blank=True)
+    item_price_status = models.CharField(max_length=300,null=True,blank=True)
 
 #Decor Sub Items
 class admin_decor_subitems(models.Model):
@@ -66,13 +67,14 @@ class admin_decor_subitems(models.Model):
     item_category = models.ForeignKey(admin_Category, on_delete=models.CASCADE,null=True,blank=True)
     item = models.ForeignKey(admin_decor_items, on_delete=models.CASCADE,null=True,blank=True)
     subitem = models.CharField(max_length=300,null=True,blank=True)
-    sitem_qty = models.IntegerField(default=1,null=True,blank=True)
-    sitem_price = models.IntegerField(default=1,null=True,blank=True)
+    sitem_qty = models.IntegerField(null=True,blank=True)
+    sitem_price = models.IntegerField(null=True,blank=True)
     sitem_total = models.IntegerField(default=1,null=True,blank=True)
 
     sitem_final_amount = models.IntegerField(default=0,null=True,blank=True)
     sitem_payable_amount = models.IntegerField(default=0,null=True,blank=True)
-    sitem_status = models.CharField(max_length=300,null=True,blank=True)
+    sitem_qty_status = models.CharField(max_length=300,null=True,blank=True)
+    sitem_price_status = models.CharField(max_length=300,null=True,blank=True)
 
 #Decor Items Gallery
 class admin_gallery(models.Model):
@@ -83,4 +85,4 @@ class admin_gallery(models.Model):
     designation = models.ForeignKey(login_designation, on_delete=models.CASCADE,null=True,blank=True)
 
     img_name = models.CharField(max_length=300,null=True,blank=True)
-    gallery_img = models.FileField(upload_to = 'admin/gallery/Decor_images/')
+    gallery_img = models.FileField(upload_to = 'admin/gallery/Decor_images/',null=True,blank=True)

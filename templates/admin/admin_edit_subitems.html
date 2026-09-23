@@ -1,0 +1,73 @@
+{% extends "admin/admin_index.html" %}
+{% load static %}
+
+{% block content %}
+
+<style>
+    table {
+        background-color: green;
+        
+    }
+</style>
+
+<br>
+
+<br>
+<center style="font-family: 'Courier New', Courier, monospace;font-size: xx-large;font-weight: bolder;">EDIT ITEMS</center>
+<br>
+
+ 
+            <div class="table-responsive mt-3 mb-3 container">
+
+                <form method="post" action="" id="" autocomplete="off" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    {% for n in cust %}
+                    {% if n.id == get_sitems.customer_id %}
+                    <input type="hidden" name="cadv" value="{{n.customer_advance}}">
+                    {% endif %}
+                    {% endfor %}
+                            <table class="table   table-bordered ">
+                                <tr>
+                                    <th width="">Category</th>
+                                    <th width="">Item</th>
+                                    <th width="">Sub Item</th>
+                                    <th width="">Sub Qty</th>
+                                    <th width="">Sub Price</th>
+                                    <th width="">Action</th>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <input type="text" value="{{get_sitems.item_category.category}}"><br>
+                                    <select class="" name="mscat" >
+                                        
+                                        
+                                        {%for j in cat%}
+                                        <option value="{{j.id}}">{{j.category}}</option>
+                                        {%endfor%}
+                                    </select>
+                                    </td>
+                                    <td>
+                                        <input type="text" value="{{get_sitems.item.item_name}}"><br>
+                                    <select name="mitem">
+                                        {% for k in get_items %}
+                                            <option value="{{ k.id }}">
+                                                {{ k.item_name }}
+                                            </option>
+                                        {% endfor %}
+                                    </select>
+                                    </td>
+                                    <td><input type="text" name="sitem" value="{{get_sitems.subitem}}"></td>
+                                    <td><input type="text" name="sqty" value="{{get_sitems.sitem_qty}}"></td>
+                                    <td><input type="text" name="sprice" value="{{get_sitems.sitem_price}}"></td>
+                                    <td><button type="submit">Update</button></td>
+                                </tr>
+                                </table>
+
+                              
+                </form>
+
+
+
+
+
+{% endblock %}

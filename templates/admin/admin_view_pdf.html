@@ -117,7 +117,7 @@ body {
 }
 /* Table heading */
     .table-heading {
-        background-color: #50C878;
+        background-color: #8fca09;
         text-align: center;
         font-family:Arial, Helvetica, sans-serif;
         font-size: larger;
@@ -134,7 +134,7 @@ body {
 }
 .calc-table
  {
-        background-color: #50C878;
+        background-color: #8fca09;
         font-family:Arial, Helvetica, sans-serif;
         font-size: larger;
         font-weight: bolder;
@@ -269,26 +269,41 @@ body {
                             {% endfor %}
                         </td>
 
-                        <td width="10%">
-                            {{ i.item_qty }}
-
+                        <td width="30%">
+                             {% if i.item_qty_status == 'data' %}
+                            <q>{{ i.item_qty }}</q>
+                            {% else %}
+                            <q></q>
+                            {% endif %}
                             <!-- SUB ITEM QTY -->
                             {% for j in sitem %}
                                 {% if j.item_id == i.id %}
                                     <br>
-                                    &nbsp;&nbsp;{{ j.sitem_qty }}
+                                    {% if j.sitem_qty_status == 'data' %}
+                                    <q>{{ j.sitem_qty }}</q>
+                                    {% else %}
+                                    <q></q>
+                                    {% endif %}
                                 {% endif %}
                             {% endfor %}
                         </td>
 
                         <td width="30%">
-                            {{ i.item_price }}
+                            {% if i.item_price_status == 'data' %}
+                            <q>{{ i.item_price }}</q>
+                            {% else %}
+                            <q></q>
+                            {% endif %}
 
                             <!-- SUB ITEM PRICE -->
                             {% for j in sitem %}
                                 {% if j.item_id == i.id %}
                                     <br>
-                                    &nbsp;&nbsp;{{ j.sitem_price }}
+                                    {% if j.sitem_price_status == 'data' %}
+                                    {{ j.sitem_price }}
+                                    {% else %}
+                                    <q></q>
+                                    {% endif %}
                                 {% endif %}
                             {% endfor %}
                         </td>
@@ -326,37 +341,38 @@ body {
 <br><br><br>
 
 <!-- Next Page For displaying images -->
+ {% if gall %}
 <div class="gallery-page-break"></div>
+
 <br><br><br><br><br><br><br><br>
 
-    <!-- Gallery -->
+<!-- Gallery -->
+<table width="100%" cellpadding="5" cellspacing="5">
+    {% for e in gall %}
 
-    <table width="100%" cellpadding="5" cellspacing="5" >
-    <tr>
-        {% for e in gall %}
-            <td width="50%" align="center" valign="top" >
-                <span id="img_heading">{{ e.img_name }}</span><br>
-                <img src="{{ e.rounded_img }}"
-                     width="400"
-                     height="300" />
+        {% if forloop.counter0|divisibleby:2 %}
+            <tr>
+        {% endif %}
 
-                
-                
-            </td>
+        <td width="50%" align="center" valign="top">
+            <div>
+                {{ e.img_name }}
+            </div>
 
-            {% if forloop.counter|divisibleby:2 %}
-                </tr>
-                {% if not forloop.last %}
-                    <tr>
-                {% endif %}
-            {% endif %}
-        {% endfor %}
+            <br>
 
-        {# Close incomplete final row #}
-        {% if not galleries|length|divisibleby:2 %}
+            <img src="{{ e.rounded_img }}"
+                 width="400"
+                 height="300" />
+        </td>
+
+        {% if forloop.counter|divisibleby:2 or forloop.last %}
             </tr>
         {% endif %}
+
+    {% endfor %}
 </table>
+{% endif %}
 
 
 </body>

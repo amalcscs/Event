@@ -1,12 +1,16 @@
-{% extends "admin/admin_dashboard.html" %}
+{% extends "admin/admin_index.html" %}
 {% load static %}
 
 {% block content %}
+
+<center style="margin-top: 100px; font-weight: bolder ;font-family: 'Courier New', Courier, monospace;font-size: xx-large;">ADD GALLERY</center>
+<br><br>
 <center>
 <form method="post" action=" " id="" autocomplete="off" enctype="multipart/form-data">
                     {% csrf_token %}
 
                 <input type="hidden" id="cid" value="{{cust.id}}">
+
                 <div class="row">
                     <div class="col-md-6">Image Name
                         <br>
@@ -29,6 +33,37 @@
         </form>
 
 </center>
+
+<br><br>
+<center style="margin-top: 50px; font-weight: bolder ;font-family: 'Courier New', Courier, monospace;font-size: xx-large;"> GALLERY LIST</center>
+<br><br>
+<table class="table   table-bordered">
+        <tr>
+            <th>Gallery Name</th>
+            <th>Gallery Image</th>
+            <th>Edit</th>
+            <th>Delete</th>
+        </tr>
+        {% for i in gal %}
+        <tr>
+            <td>{{i.img_name}}</td>
+            <td>
+                <img src="{{ i.gallery_img.url }}" width="50" height="50">
+            </td>
+            </td>
+            <td>
+            <a href="{% url 'admin_edit_gallery' i.id %}" type="button" class="btn btn-danger"><i class="mdi mdi-check"></i>&nbsp; Edit</a>
+            </td>
+            <td>
+            <button type="button"
+                class="btn btn-danger admin_delete_gallery"
+                data-id="{{ i.id }}">
+                <i class="mdi mdi-delete"></i>&nbsp; Remove
+            </button>
+            </td>
+        </tr>
+        {% endfor %}
+    </table>
 
 
 <script>
@@ -68,5 +103,42 @@ $(document).on("click", "#admin_add_gallery_save", function () {
 
 </script>
 
+<!--Delete Gallery using Ajax-->
+
+<script>
+
+$(document).on("click", ".admin_delete_gallery", function () {
+
+    var gallery_id = $(this).data("id");
+    var row = $(this).closest("tr");
+
+    if (!confirm("Are you sure you want to delete this image?")) {
+        return;
+    }
+
+    $.ajax({
+        type: "POST",
+        url: "{% url 'admin_ajax_delete_gallery' %}",
+        data: {
+            "id": gallery_id,
+            "csrfmiddlewaretoken": "{{ csrf_token }}"
+        },
+
+        success: function (response) {
+            if (response.status === "success") {
+                row.remove();
+                alert("Gallery image deleted successfully");
+            } else {
+                alert(response.message);
+            }
+        },
+
+        error: function (xhr) {
+            console.log(xhr.responseText);
+            alert("Error deleting image");
+        }
+    });
+});
+</script>
 
 {% endblock %}

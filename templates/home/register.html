@@ -16,9 +16,10 @@
     <title>Admin Register</title>
 </head>
 <body>
+    <center style="margin-top:50px;"><b>REGISTER</b></center><br><br>
     <div class="row">
-        <div class="col-md-2"></div>
-        <div class="col-md-8">
+        <div class="col-md-4"></div>
+        <div class="col-md-4">
             <form method="post" action="" enctype="multipart/form-data">
             {% csrf_token %}
 
@@ -38,6 +39,7 @@
                 <div class="col-md-6">Profile Picture</div>
                 <div class="col-md-6"><input type="file" name="profile_pic"></div>
             </div>
+            <br>
             <div class="row">
                 <div class="col-md-4"></div>
                 <div class="col-md-4"><button type="submit" name="">Submit</div>
@@ -47,7 +49,7 @@
 
          </form>
 
-        <div class="col-md-2"></div>
+        <div class="col-md-4"></div>
 
        
 

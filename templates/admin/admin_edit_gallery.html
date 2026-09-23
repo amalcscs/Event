@@ -1,0 +1,78 @@
+{% extends "admin/admin_index.html" %}
+{% load static %}
+
+{% block content %}
+
+<center style="margin-top: 100px; font-weight: bolder;
+font-family: 'Courier New', Courier, monospace;
+font-size: xx-large;">
+    EDIT GALLERY
+</center>
+
+<br><br>
+
+<center>
+
+<form action=""
+      method="post"
+      enctype="multipart/form-data"
+      autocomplete="off">
+
+    {% csrf_token %}
+
+    <div class="row">
+
+        <div class="col-md-6">
+            Image Name
+            <br>
+
+            <input type="text"
+                   name="img_name"
+                   value="{{ gal.img_name }}"
+                   required>
+        </div>
+
+        <div class="col-md-6">
+            Gallery Image
+            <br>
+
+            <input type="file"
+                   name="img"
+                   >
+            
+            <br>
+            
+                <img src="{{ gal.gallery_img.url }}"
+                     width="100"
+                     height="100">
+        </div>
+
+    </div>
+
+    <br>
+
+    <div class="row">
+
+        <div class="col-md-4"></div>
+
+        <div class="col-md-4">
+
+            <button type="submit">
+                Update
+            </button>
+
+        </div>
+
+        <div class="col-md-4"></div>
+
+    </div>
+
+</form>
+
+</center>
+
+<br><br>
+
+
+
+{% endblock %}

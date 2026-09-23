@@ -21,6 +21,11 @@ from homeapp.views import *
 from PIL import Image, ImageDraw
 from io import BytesIO
 import base64
+from django.http import JsonResponse
+from django.views.decorators.http import require_POST
+
+
+
 
 
 #Admin Logout Page
@@ -30,6 +35,10 @@ def Admin_logout(request):
         return redirect("/")
     else:
         return redirect('/') 
+
+#Add Branch Page
+def admin_index(request):
+    return render(request,'admin/admin_index.html')
 
 #Add Branch Page
 def admin_branch(request):
@@ -51,7 +60,7 @@ def admin_dashboard(request):
         else:
             return redirect('/')
         
-        Adm=login_register.objects.get(id= Adm.id)
+        Adm=login_register.objects.get(id= A_id)
         return render(request,'admin/admin_dashboard.html',{'Adm':Adm})
     else:
         return redirect('/')
@@ -63,9 +72,9 @@ def admin_view_list(request):
             A_id = request.session['A_id']
         else:
             return redirect('/')
-        
+        Adm=login_register.objects.get(id= A_id)
         view_customer = admin_Customer.objects.filter(admin_id=A_id)
-        return render(request,'admin/admin_view_list.html',{'cust':view_customer})
+        return render(request,'admin/admin_view_list.html',{'cust':view_customer,'Adm':Adm})
     else:
         return redirect('/')
 
@@ -99,8 +108,10 @@ def admin_view_pdf(request,id):
             A_id = request.session['A_id']
         else:
             return redirect('/')
+
+        Adm=login_register.objects.get(id= A_id)
         cus = admin_Customer.objects.get(id=id)
-        cat = admin_Category.objects.filter(admin_id=id,admin_decor_items__customer_id=id).distinct()
+        cat = admin_Category.objects.filter(admin_id=A_id,admin_decor_items__customer_id=id).distinct()
         mitem = admin_decor_items.objects.filter(customer_id=id).select_related('item_category').order_by('item_category_id')
         sitem = admin_decor_subitems.objects.filter(customer_id=id)
         gall = admin_gallery.objects.filter(customer_id=id)
@@ -122,7 +133,7 @@ def admin_view_pdf(request,id):
         'sitem': sitem,
         'cat': cat,
         'gall': gall,
-        
+        'Adm':Adm
         }
         # Create a Django response object, and specify content_type as pdf
         response = HttpResponse(content_type='application/pdf')
@@ -145,6 +156,22 @@ def admin_view_pdf(request,id):
     else:
         return redirect('/')
 
+#Select items depend on category Ajax
+def get_items_by_category(request):
+
+    category_id = request.GET.get('category_id')
+
+    items = admin_decor_items.objects.filter(
+        item_category_id=category_id
+    ).values(
+        'id',
+        'item_name'
+    )
+
+    return JsonResponse({
+        'items': list(items)
+    })
+
 #Add Document Page
 def admin_document(request,id):
     if 'A_id' in request.session:
@@ -152,12 +179,13 @@ def admin_document(request,id):
             A_id = request.session['A_id']
         else:
             return redirect('/')
-        
+        Adm=login_register.objects.get(id= A_id)
         view_customer = admin_Customer.objects.get(id=id)
         item = admin_decor_items.objects.filter(customer_id=id)
+        sitem = admin_decor_subitems.objects.filter(customer_id=id)
         cat = admin_Category.objects.filter(admin_id=A_id)
         custid = admin_decor_items.objects.filter(customer_id=id)
-        return render(request,'admin/admin_document.html',{'cust':view_customer,'custid':custid,'item':item,'cat':cat})
+        return render(request,'admin/admin_document.html',{'Adm':Adm,'cust':view_customer,'custid':custid,'item':item,'cat':cat,'sitem':sitem})
     else:
         return redirect('/')
 
@@ -196,7 +224,7 @@ def admin_edit_customer(request,id):
             A_id = request.session['A_id']
         else:
             return redirect('/')
-        
+        Adm=login_register.objects.get(id= A_id)
         desig = login_register.objects.get(id=A_id)
         get_cust = admin_Customer.objects.get(id=id)
         if request.method=='POST':
@@ -213,7 +241,7 @@ def admin_edit_customer(request,id):
             edit_cust.admin_id = A_id
             edit_cust.save()
             return redirect('admin_view_list')
-        return render(request,'admin/admin_edit_customer.html',{'get_cust':get_cust})
+        return render(request,'admin/admin_edit_customer.html',{'get_cust':get_cust,'Adm':Adm})
     else:
             return redirect('/')
 
@@ -230,7 +258,7 @@ def admin_add_category(request):
             A_id = request.session['A_id']
         else:
             return redirect('/')
-        
+        Adm=login_register.objects.get(id= A_id)
         
         desig = login_register.objects.get(id=A_id)
         cate = admin_Category.objects.filter(admin_id=A_id)
@@ -240,7 +268,7 @@ def admin_add_category(request):
             Add_cat.category = request.POST.get('cat_name')
             Add_cat.admin_id = A_id
             Add_cat.save()
-        return render(request,'admin/admin_add_category.html',{'cate':cate})
+        return render(request,'admin/admin_add_category.html',{'cate':cate,'Adm':Adm})
     else:
             return redirect('/')
 
@@ -251,7 +279,7 @@ def admin_edit_category(request,id):
             A_id = request.session['A_id']
         else:
             return redirect('/')
-        
+        Adm=login_register.objects.get(id= A_id)
         desig = login_register.objects.get(id=A_id)
         get_cate = admin_Category.objects.get(id=id)
         if request.method=='POST':
@@ -260,10 +288,11 @@ def admin_edit_category(request,id):
             edit_cat.admin_id = A_id
             edit_cat.save()
             return redirect('admin_add_category')
-        return render(request,'admin/admin_edit_category.html',{'get_cate':get_cate})
+        return render(request,'admin/admin_edit_category.html',{'get_cate':get_cate,'Adm':Adm})
     else:
             return redirect('/')
 
+#Delete category
 def admin_delete_category(request,id):
     cat = admin_Category.objects.get(id=id)
     cat.delete()
@@ -283,16 +312,41 @@ def admin_ajax_add_quotation(request):
             Add_items = admin_decor_items()
             Add_items.item_category_id = request.POST.get('mcat')
             Add_items.item_name = request.POST.get('item')
-            Add_items.item_qty = request.POST.get('qty')
-            Add_items.item_price = request.POST.get('price')
+            item_qty = request.POST.get('qty')
+            item_price = request.POST.get('price')
             Add_items.customer_id = request.POST.get('cid')
             advance = request.POST.get('cadv')
             Add_items.branch_id = desig.branch.id
             Add_items.department_id = desig.department.id
             Add_items.designation_id = desig.designation.id
             Add_items.admin_id = A_id
-            Add_items.item_status = 'Main'
-            Add_items.item_total = int(Add_items.item_qty) * int(Add_items.item_price)
+            
+            if not item_qty:
+                Add_items.item_qty = 1
+                Add_items.item_qty_status = 'nill'
+            else:
+                Add_items.item_qty = int(item_qty)
+                Add_items.item_qty_status = 'data'
+
+            if not item_price:
+                Add_items.item_price = 1
+                Add_items.item_price_status = 'nill'
+            else:
+                Add_items.item_price = int(item_price)
+                Add_items.item_price_status = 'data'
+
+            if Add_items.item_price_status == 'data' and Add_items.item_qty_status == 'data':
+                Add_items.item_total = int(Add_items.item_qty) * int(Add_items.item_price)
+            elif Add_items.item_price_status == 'data' and Add_items.item_qty_status == 'nill':
+                Add_items.item_total = 1 * int(Add_items.item_price)
+            elif Add_items.item_price_status == 'nill' and Add_items.item_qty_status == 'data':
+                Add_items.item_total = 0
+            elif Add_items.item_price_status == 'nill' and Add_items.item_qty_status == 'nill':
+                Add_items.item_total = 0
+            else:
+                return
+                
+            
             total = admin_decor_items.objects.filter(
                 customer_id=Add_items.customer_id
             )
@@ -326,6 +380,89 @@ def admin_ajax_add_quotation(request):
     else:
             return redirect('/')
 
+#Edit Decor Items
+def admin_edit_items(request,id):
+    if 'A_id' in request.session:
+        if request.session.has_key('A_id'):
+            A_id = request.session['A_id']
+        else:
+            return redirect('/')
+        Adm=login_register.objects.get(id= A_id)
+        desig = login_register.objects.get(id=A_id)
+        view_customer = admin_Customer.objects.filter(admin_id=A_id)
+        cat = admin_Category.objects.filter(admin_id=A_id)
+        get_items = admin_decor_items.objects.get(id=id)
+        if request.method=='POST':
+            edit_items = admin_decor_items.objects.get(id=id)
+            edit_items.item_category_id = request.POST.get('mcat')
+            edit_items.item_name = request.POST.get('item')
+            item_qty = request.POST.get('qty')
+            item_price = request.POST.get('price')
+            advance = request.POST.get('cadv')
+
+            if not item_qty:
+                edit_items.item_qty = 1
+                edit_items.item_qty_status = 'nill'
+            else:
+                edit_items.item_qty = int(item_qty)
+                edit_items.item_qty_status = 'data'
+
+            if not item_price:
+                edit_items.item_price = 1
+                edit_items.item_price_status = 'nill'
+            else:
+                edit_items.item_price = int(item_price)
+                edit_items.item_price_status = 'data'
+
+            if edit_items.item_price_status == 'data' and edit_items.item_qty_status == 'data':
+                edit_items.item_total = int(edit_items.item_qty) * int(edit_items.item_price)
+            elif edit_items.item_price_status == 'data' and edit_items.item_qty_status == 'nill':
+                edit_items.item_total = 1 * int(edit_items.item_price)
+            elif edit_items.item_price_status == 'nill' and edit_items.item_qty_status == 'data':
+                edit_items.item_total = 0
+            elif edit_items.item_price_status == 'nill' and edit_items.item_qty_status == 'nill':
+                edit_items.item_total = 0
+            else:
+                return
+
+            total = admin_decor_items.objects.filter(
+                customer_id=edit_items.customer_id
+            )
+            stotal = admin_decor_subitems.objects.filter(
+                customer_id=edit_items.customer_id
+            )
+            n=0
+            for i in total:
+                n+=int(i.item_total or 0)
+            s=edit_items.item_total+n 
+            p=0
+            for q in stotal:
+                p+=int(q.sitem_total or 0) 
+             
+            kk=s+p
+            edit_items.item_final_amount = s
+            edit_items.item_payable_amount = s - int(advance)
+            # Add_items.item_final_amount = a - int(advance)
+
+
+
+            edit_items.save()
+
+            edit_items1 = admin_Customer.objects.get(id=edit_items.customer_id)
+            edit_items1.customer_payable_amt = kk - int(advance)
+            edit_items1.customer_total_amt = kk
+            edit_items1.save()
+            return redirect('admin_view_list')
+        return render(request,'admin/admin_edit_items.html',{'Adm':Adm,'get_items':get_items,'cust':view_customer,'cat':cat})
+    else:
+            return redirect('/')
+
+#Delete Items
+def admin_delete_items(request,id):
+    cat = admin_decor_items.objects.get(id=id)
+    cat.delete()
+    return redirect('admin_view_list')
+
 #Add Decor Sub Items Ajax
 def admin_ajax_add_subitem(request):
     if 'A_id' in request.session:
@@ -341,16 +478,40 @@ def admin_ajax_add_subitem(request):
             Add_sitems.item_category_id = request.POST.get('mscat')
             Add_sitems.item_id = request.POST.get('mitem')
             Add_sitems.subitem = request.POST.get('sitem')
-            Add_sitems.sitem_qty = request.POST.get('sqty')
-            Add_sitems.sitem_price = request.POST.get('sprice')
+            sqty = request.POST.get('sqty')
+            sprice = request.POST.get('sprice')
             Add_sitems.customer_id = request.POST.get('cid')
             adv = request.POST.get('cadv')
             Add_sitems.branch_id = desig.branch.id
             Add_sitems.department_id = desig.department.id
             Add_sitems.designation_id = desig.designation.id
             Add_sitems.admin_id = A_id
-            Add_sitems.sitem_status = 'Sub'
-            Add_sitems.sitem_total = int(Add_sitems.sitem_qty) * int(Add_sitems.sitem_price)
+
+            if not sqty:
+                Add_sitems.sitem_qty = 1
+                Add_sitems.sitem_qty_status = 'nill'
+            else:
+                Add_sitems.sitem_qty = int(sqty)
+                Add_sitems.sitem_qty_status = 'data'
+
+            if not sprice:
+                Add_sitems.sitem_price = 1
+                Add_sitems.sitem_price_status = 'nill'
+            else:
+                Add_sitems.sitem_price = int(sprice)
+                Add_sitems.sitem_price_status = 'data'
+
+            if Add_sitems.sitem_price_status == 'data' and Add_sitems.sitem_qty_status == 'data':
+                Add_sitems.sitem_total = int(Add_sitems.sitem_qty) * int(Add_sitems.sitem_price)
+            elif Add_sitems.sitem_price_status == 'data' and Add_sitems.sitem_qty_status == 'nill':
+                Add_sitems.sitem_total = 1 * int(Add_sitems.sitem_price)
+            elif Add_sitems.sitem_price_status == 'nill' and Add_sitems.sitem_qty_status == 'data':
+                Add_sitems.sitem_total = 0
+            elif Add_sitems.sitem_price_status == 'nill' and Add_sitems.sitem_qty_status == 'nill':
+                Add_sitems.sitem_total = 0
+            else:
+                return
+
             total = admin_decor_subitems.objects.filter(
                 customer_id=Add_sitems.customer_id
             )
@@ -385,6 +546,91 @@ def admin_ajax_add_subitem(request):
     else:
             return redirect('/')
 
+#Edit Decor SubItems
+def admin_edit_subitems(request,id):
+    if 'A_id' in request.session:
+        if request.session.has_key('A_id'):
+            A_id = request.session['A_id']
+        else:
+            return redirect('/')
+        Adm=login_register.objects.get(id= A_id)
+        desig = login_register.objects.get(id=A_id)
+        view_customer = admin_Customer.objects.filter(admin_id=A_id)
+        cat = admin_Category.objects.filter(admin_id=A_id)
+        get_sitems = admin_decor_subitems.objects.get(id=id)
+        
+        get_items = admin_decor_items.objects.filter(admin_id=A_id,customer_id=get_sitems.customer_id)
+        if request.method=='POST':
+            edit_sitems = admin_decor_subitems.objects.get(id=id)
+            edit_sitems.item_category_id = request.POST.get('mscat')
+            edit_sitems.item_id = request.POST.get('mitem')
+            edit_sitems.subitem = request.POST.get('sitem')
+            sqty = request.POST.get('sqty')
+            sprice = request.POST.get('sprice')
+            adv = request.POST.get('cadv')
+
+            if not sqty:
+                edit_sitems.sitem_qty = 1
+                edit_sitems.sitem_qty_status = 'nill'
+            else:
+                edit_sitems.sitem_qty = int(sqty)
+                edit_sitems.sitem_qty_status = 'data'
+
+            if not sprice:
+                edit_sitems.sitem_price = 1
+                edit_sitems.sitem_price_status = 'nill'
+            else:
+                edit_sitems.sitem_price = int(sprice)
+                edit_sitems.sitem_price_status = 'data'
+
+            if edit_sitems.sitem_price_status == 'data' and edit_sitems.sitem_qty_status == 'data':
+                edit_sitems.sitem_total = int(edit_sitems.sitem_qty) * int(edit_sitems.sitem_price)
+            elif edit_sitems.sitem_price_status == 'data' and edit_sitems.sitem_qty_status == 'nill':
+                edit_sitems.sitem_total = 1 * int(edit_sitems.sitem_price)
+            elif edit_sitems.sitem_price_status == 'nill' and edit_sitems.sitem_qty_status == 'data':
+                edit_sitems.sitem_total = 0
+            elif edit_sitems.sitem_price_status == 'nill' and edit_sitems.sitem_qty_status == 'nill':
+                edit_sitems.sitem_total = 0
+
+            total = admin_decor_subitems.objects.filter(
+                customer_id=edit_sitems.customer_id
+            )
+            mtotal = admin_decor_items.objects.filter(
+                customer_id=edit_sitems.customer_id
+            )   
+            n=0
+            for i in total:
+                n+=int(i.sitem_total or 0)
+            s=edit_sitems.sitem_total+n   
+            vv=0 
+            for l in mtotal:
+                vv+=int(l.item_total or 0)
+            
+            kk=vv+s
+            
+            edit_sitems.sitem_final_amount = s
+            edit_sitems.sitem_payable_amount = s - int(adv)
+            # Add_items.item_final_amount = a - int(advance)
+
+
+
+            edit_sitems.save()
+
+            edit_sitems1 = admin_Customer.objects.get(id=edit_sitems.customer_id)
+            edit_sitems1.customer_total_amt = kk
+            edit_sitems1.customer_payable_amt = kk - int(adv)
+            edit_sitems1.save()
+            return redirect('admin_view_list')
+        return render(request,'admin/admin_edit_subitems.html',{'Adm':Adm,'get_items':get_items,'get_sitems':get_sitems,'cust':view_customer,'cat':cat})
+    else:
+            return redirect('/')
+
+#Delete Items
+def admin_delete_subitems(request,id):
+    cat = admin_decor_subitems.objects.get(id=id)
+    cat.delete()
+    return redirect('admin_view_list')
+
 #Gallery
 def admin_add_gallery(request,id):
     if 'A_id' in request.session:
@@ -392,16 +638,16 @@ def admin_add_gallery(request,id):
             A_id = request.session['A_id']
         else:
             return redirect('/')
-        
+        Adm=login_register.objects.get(id= A_id)
         desig = login_register.objects.get(id=A_id)
         view_customer = admin_Customer.objects.get(id=id)
-
-        return render(request,'admin/admin_add_gallery.html',{'cust':view_customer})
+        gal = admin_gallery.objects.filter(customer_id=id,admin_id=A_id)
+        return render(request,'admin/admin_add_gallery.html',{'cust':view_customer,'Adm':Adm,'gal':gal})
         
     else:
             return redirect('/')
 
-#Add Gallery
+#Add Gallery Ajax
 def admin_ajax_add_gallery_save(request):
     if 'A_id' in request.session:
         if request.session.has_key('A_id'):
@@ -428,4 +674,51 @@ def admin_ajax_add_gallery_save(request):
     else:
             return redirect('/')
 
-    
+#Edit Gallery
+def admin_edit_gallery(request,id):
+    if 'A_id' in request.session:
+        if request.session.has_key('A_id'):
+            A_id = request.session['A_id']
+        else:
+            return redirect('/')
+        Adm=login_register.objects.get(id= A_id)
+        desig = login_register.objects.get(id=A_id)
+        gal = admin_gallery.objects.get(id=id)
+        if request.method=='POST':
+            edit_gallery = admin_gallery.objects.get(id=id)
+            edit_gallery.img_name = request.POST.get('img_name')
+            edit_gallery.gallery_img = request.FILES.get('img')
+            
+            edit_gallery.save()
+            return redirect('admin_view_list')
+        return render(request,'admin/admin_edit_gallery.html',{'Adm':Adm,'gal':gal})
+        
+    else:
+            return redirect('/')
+
+
+
+#Delete Gallery Ajax
+@require_POST
+def admin_ajax_delete_gallery(request):
+    gallery_id = request.POST.get("id")
+
+    try:
+        gallery = admin_gallery.objects.get(id=gallery_id)
+
+        # Delete uploaded image from media storage
+        if gallery.gallery_img:
+            gallery.gallery_img.delete(save=False)
+
+        gallery.delete()
+
+        return JsonResponse({
+            "status": "success",
+            "message": "Gallery deleted successfully"
+        })
+
+    except admin_gallery.DoesNotExist:
+        return JsonResponse({
+            "status": "error",
+            "message": "Gallery not found"
+        }, status=404)

@@ -31,6 +31,9 @@ urlpatterns = [
 
     #Add Document Page
     re_path( r'^admin_document/(?P<id>\d+)$', views.admin_document, name='admin_document'),
+    
+    #Select items depend on category Ajax
+    re_path( r'^get-items-by-category$', views.get_items_by_category, name='get_items_by_category'),
 
     #Add Customer
     re_path( r'^admin_ajax_add_customer/$', views.admin_ajax_add_customer, name='admin_ajax_add_customer'),
@@ -52,16 +55,33 @@ urlpatterns = [
 
     #Add Decor Items
     re_path( r'^admin_ajax_add_quotation/$', views.admin_ajax_add_quotation, name='admin_ajax_add_quotation'),
+    
+    #Edit Items
+    re_path( r'^admin_edit_items/(?P<id>\d+)$', views.admin_edit_items, name='admin_edit_items'),
+    
+    #Delete Items
+    re_path( r'^admin_delete_items/(?P<id>\d+)$', views.admin_delete_items, name='admin_delete_items'),
 
     #Add Decor Sub Items
     re_path( r'^admin_ajax_add_subitem/$', views.admin_ajax_add_subitem, name='admin_ajax_add_subitem'),
     
+    #Edit Sub Items
+    re_path( r'^admin_edit_subitems/(?P<id>\d+)$', views.admin_edit_subitems, name='admin_edit_subitems'),
+    
+    #Delete Items
+    re_path( r'^admin_delete_subitems/(?P<id>\d+)$', views.admin_delete_subitems, name='admin_delete_subitems'),
+
     #Gallery
     re_path( r'^admin_add_gallery/(?P<id>\d+)$', views.admin_add_gallery, name='admin_add_gallery'),
 
     #Add Gallery
     re_path( r'^admin_ajax_add_gallery_save/$', views.admin_ajax_add_gallery_save, name='admin_ajax_add_gallery_save'),
-
+    
+    #Edit Gallery
+    re_path( r'^admin_edit_gallery/(?P<id>\d+)$', views.admin_edit_gallery, name='admin_edit_gallery'),
+    
+    #Delete Gallery
+    re_path( r'^admin_ajax_delete_gallery/$',views.admin_ajax_delete_gallery,name='admin_ajax_delete_gallery'),
     
     
     
