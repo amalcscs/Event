@@ -6,22 +6,24 @@
 <center style="margin-top: 100px; font-weight: bolder ;font-family: 'Courier New', Courier, monospace;font-size: xx-large;">ADD GALLERY</center>
 <br><br>
 <center>
-<form method="post" action=" " id="" autocomplete="off" enctype="multipart/form-data">
+<form method="post" id="gallery_form" action=" " autocomplete="off" enctype="multipart/form-data">
                     {% csrf_token %}
 
                 <input type="hidden" id="cid" value="{{cust.id}}">
 
                 <div class="row">
-                    <div class="col-md-6">Image Name
+                    <div class="col-md-3"></div>
+                    <div class="col-md-3">Image Name
                         <br>
                         <input type="text" id="img_name">
                     </div>
-                    <div class="col-md-6">Gallery
+                    <div class="col-md-3">Gallery
                         <br>
                         <input type="file" id="img">
                     </div>
+                    <div class="col-md-3"></div>
                 </div>
-                
+                <br><br>
                 <div class="row">
                     <div class="col-md-4"></div>
                     <div class="col-md-4"><button type="submit" id="admin_add_gallery_save">Submit</button></div>
@@ -69,38 +71,81 @@
 
 </div>
 <script>
-$(document).on("click", "#admin_add_gallery_save", function () {
+$(document).on("submit", "#gallery_form", function(e) {
+
+    e.preventDefault();
 
     var formData = new FormData();
 
-    formData.append("cid", $("#cid").val());
-    formData.append("img_name", $("#img_name").val());
-
+    var cid = $("#cid").val();
+    var img_name = $("#img_name").val();
     var image = $("#img")[0].files[0];
 
-    if (image) {
-        formData.append("img", image);
+    console.log("CID:", cid);
+    console.log("Image Name:", img_name);
+    console.log("Image:", image);
+
+    if (!img_name.trim()) {
+        alert("Please enter image name");
+        return;
     }
 
-    formData.append("csrfmiddlewaretoken", "{{ csrf_token }}");
+    if (!image) {
+        alert("Please select an image");
+        return;
+    }
+
+    formData.append("cid", cid);
+    formData.append("img_name", img_name);
+    formData.append("img", image);
+
+    formData.append(
+        "csrfmiddlewaretoken",
+        $("input[name='csrfmiddlewaretoken']").val()
+    );
 
     $.ajax({
+
         type: "POST",
+
         url: "{% url 'admin_ajax_add_gallery_save' %}",
+
         data: formData,
+
         processData: false,
+
         contentType: false,
 
-        success: function (response) {
-            console.log(response);
-            alert("Image saved successfully");
+        success: function(response) {
+
+            console.log("SERVER RESPONSE:", response);
+
+            if (response.status === "success") {
+
+                alert(response.message);
+
+                $("#img_name").val("");
+                $("#img").val("");
+
+                location.reload();
+
+            } else {
+
+                alert(response.message);
+
+            }
         },
 
-        error: function (xhr) {
-            console.log(xhr.responseText);
-            alert("Error saving image");
+        error: function(xhr) {
+
+            console.log("STATUS:", xhr.status);
+            console.log("ERROR:", xhr.responseText);
+
+            alert("Error: " + xhr.responseText);
         }
+
     });
+
 });
 
 </script>

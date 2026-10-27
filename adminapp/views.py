@@ -649,30 +649,101 @@ def admin_add_gallery(request,id):
 
 #Add Gallery Ajax
 def admin_ajax_add_gallery_save(request):
-    if 'A_id' in request.session:
-        if request.session.has_key('A_id'):
-            A_id = request.session['A_id']
-        else:
-            return redirect('/')
-        
-        desig = login_register.objects.get(id=A_id)
-        if request.method=='POST':
-            Add_gallery = admin_gallery()
-            Add_gallery.img_name = request.POST.get('img_name')
-            Add_gallery.gallery_img = request.FILES.get('img')
-            Add_gallery.customer_id = request.POST.get('cid')
-            Add_gallery.branch_id = desig.branch.id
-            Add_gallery.department_id = desig.department.id
-            Add_gallery.designation_id = desig.designation.id
-            Add_gallery.admin_id = A_id
-            
-            Add_gallery.save()
 
-            return render(request,'admin/admin_add_gallery.html')
-        else:
-            return JsonResponse({'success': False, 'message': 'Invalid request method'})
-    else:
-            return redirect('/')
+    if 'A_id' not in request.session:
+        return JsonResponse({
+            'status': 'error',
+            'message': 'Admin session expired'
+        })
+
+    if request.method != 'POST':
+        return JsonResponse({
+            'status': 'error',
+            'message': 'Invalid request method'
+        })
+
+    try:
+        A_id = request.session['A_id']
+
+        desig = login_register.objects.get(id=A_id)
+
+        img_name = request.POST.get('img_name')
+        cid = request.POST.get('cid')
+        image = request.FILES.get('img')
+
+        print("========== GALLERY DEBUG ==========")
+        print("A_id:", A_id)
+        print("cid:", cid)
+        print("img_name:", img_name)
+        print("image:", image)
+        print("FILES:", request.FILES)
+        print("POST:", request.POST)
+
+        if not img_name:
+            return JsonResponse({
+                'status': 'error',
+                'message': 'Image name is required'
+            })
+
+        if not cid:
+            return JsonResponse({
+                'status': 'error',
+                'message': 'Customer ID is missing'
+            })
+
+        if not image:
+            return JsonResponse({
+                'status': 'error',
+                'message': 'Image file is missing'
+            })
+
+        # Check customer exists
+        customer = admin_Customer.objects.get(id=cid)
+
+        Add_gallery = admin_gallery()
+
+        Add_gallery.admin = desig
+        Add_gallery.customer = customer
+
+        Add_gallery.branch_id = desig.branch_id
+        Add_gallery.department_id = desig.department_id
+        Add_gallery.designation_id = desig.designation_id
+
+        Add_gallery.img_name = img_name
+        Add_gallery.gallery_img = image
+
+        Add_gallery.save()
+
+        print("Gallery saved successfully")
+        print("Gallery ID:", Add_gallery.id)
+        print("Image:", Add_gallery.gallery_img.name)
+
+        return JsonResponse({
+            'status': 'success',
+            'message': 'Gallery image added successfully',
+            'id': Add_gallery.id,
+            'image': Add_gallery.gallery_img.name
+        })
+
+    except login_register.DoesNotExist:
+        return JsonResponse({
+            'status': 'error',
+            'message': 'Admin not found'
+        })
+
+    except admin_Customer.DoesNotExist:
+        return JsonResponse({
+            'status': 'error',
+            'message': 'Customer not found'
+        })
+
+    except Exception as e:
+        print("GALLERY ERROR:", str(e))
+
+        return JsonResponse({
+            'status': 'error',
+            'message': str(e)
+        })
 
 #Edit Gallery
 def admin_edit_gallery(request,id):
